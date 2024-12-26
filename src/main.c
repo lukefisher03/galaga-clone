@@ -132,7 +132,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     SDL_RenderRect(renderer, &(b->rect));
   }
 
-  render_stars(stars, renderer);
+  render_stars(stars, renderer, player);
 
   wrap_coordinates(&player->x, &player->y, player->size, player->size);
 

@@ -4,6 +4,7 @@
 #include <SDL3/SDL_main.h>
 #include "utils.h"
 #include "config.h"
+#include "player.h"
 typedef struct Star
 {
   SDL_FRect r;
@@ -15,5 +16,5 @@ typedef struct Star
 } Star;
 
 void initialize_stars(Star star_arr[], size_t size);
-void render_stars(Star stars[], SDL_Renderer *renderer);
+void render_stars(Star stars[], SDL_Renderer *renderer, Player *player);
 #endif

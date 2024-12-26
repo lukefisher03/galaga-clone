@@ -15,18 +15,28 @@ void initialize_stars(Star star_arr[], size_t size)
   }
 }
 
-void render_stars(Star stars[], SDL_Renderer *renderer)
+void render_stars(Star stars[], SDL_Renderer *renderer, Player *player)
 {
   for (size_t i = 0; i < NUM_STARS; ++i)
   {
     stars[i].r.y += stars[i].velocity;
+    
+    // Stars sway back and forth slightly as the player moves
+    if (player->wasd & 2)
+    {
+      stars[i].r.x += 1;
+    }
+    if (player->wasd & 8)
+    {
+      stars[i].r.x -= 1;
+    }
 
     if (stars[i].r.y > (float)SCREEN_HEIGHT)
     {
       stars[i].r.y = 0;
       stars[i].r.x = SDL_randf() * SCREEN_WIDTH;
     }
-    
+
     SDL_SetRenderDrawColor(renderer, stars[i].red, stars[i].green, stars[i].blue, SDL_ALPHA_OPAQUE);
     SDL_RenderFillRect(renderer, &stars[i].r);
   }
