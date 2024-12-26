@@ -1,106 +1,93 @@
 #include "player.h"
 
-void initialize_player(struct Player *p, SDL_Renderer *renderer)
-{
-  SDL_Surface *surface = NULL;
-  char *bmp_path = NULL;
+void initialize_player(struct Player *p, SDL_Renderer *renderer) {
+    SDL_Surface *surface = NULL;
+    char *bmp_path = NULL;
 
-  p->x = (SCREEN_WIDTH - p->size) / 2.0f;
-  p->y = (SCREEN_HEIGHT - p->size) * 0.85f;
-  p->size = SHIP_SIZE;
-  p->bullets_fired = 0;
+    p->x = (SCREEN_WIDTH - p->size) / 2.0f;
+    p->y = (SCREEN_HEIGHT - p->size) * 0.85f;
+    p->size = SHIP_SIZE;
+    p->bullets_fired = 0;
 
-  SDL_asprintf(&bmp_path, "assets/ship.bmp");
-  surface = SDL_LoadBMP(bmp_path);
+    SDL_asprintf(&bmp_path, "assets/ship.bmp");
+    surface = SDL_LoadBMP(bmp_path);
 
-  if (!surface)
-  {
-    SDL_Log("Failed to load bmp at %s\n", bmp_path);
-  }
+    if (!surface) {
+        SDL_Log("Failed to load bmp at %s\n", bmp_path);
+    }
 
-  SDL_free(bmp_path);
+    SDL_free(bmp_path);
 
-  p->texture = SDL_CreateTextureFromSurface(renderer, surface);
-  if (!p->texture)
-  {
-    SDL_Log("Failed to create texture from surface: %s\n", SDL_GetError());
-  }
+    p->texture = SDL_CreateTextureFromSurface(renderer, surface);
+    if (!p->texture) {
+        SDL_Log("Failed to create texture from surface: %s\n", SDL_GetError());
+    }
 
-  SDL_DestroySurface(surface);
+    SDL_DestroySurface(surface);
 }
 
-void handle_input(SDL_Event *e, struct Player *p)
-{
-  if (e->type == SDL_EVENT_KEY_DOWN)
-  {
-    switch (e->key.scancode)
-    {
-    case SDL_SCANCODE_W:
-      p->wasd |= 1;
-      break;
-    case SDL_SCANCODE_A:
-      p->wasd |= 2;
-      break;
-    case SDL_SCANCODE_S:
-      p->wasd |= 4;
-      break;
-    case SDL_SCANCODE_D:
-      p->wasd |= 8;
-      break;
-    case SDL_SCANCODE_SPACE:
-      p->wasd |= 16;
-      break;
-    default:
-      break;
+void handle_input(SDL_Event *e, struct Player *p) {
+    if (e->type == SDL_EVENT_KEY_DOWN) {
+        switch (e->key.scancode) {
+        case SDL_SCANCODE_W:
+            p->wasd |= 1;
+            break;
+        case SDL_SCANCODE_A:
+            p->wasd |= 2;
+            break;
+        case SDL_SCANCODE_S:
+            p->wasd |= 4;
+            break;
+        case SDL_SCANCODE_D:
+            p->wasd |= 8;
+            break;
+        case SDL_SCANCODE_SPACE:
+            p->wasd |= 16;
+            break;
+        default:
+            break;
+        }
     }
-  }
 
-  if (e->type == SDL_EVENT_KEY_UP)
-  {
-    switch (e->key.scancode)
-    {
-    case SDL_SCANCODE_W:
-      p->wasd &= 30;
-      break;
-    case SDL_SCANCODE_A:
-      p->wasd &= 29;
-      break;
-    case SDL_SCANCODE_S:
-      p->wasd &= 27;
-      break;
-    case SDL_SCANCODE_D:
-      p->wasd &= 23;
-      break;
-    case SDL_SCANCODE_SPACE:
-      p->wasd &= 15;
-      break;
-    default:
-      break;
+    if (e->type == SDL_EVENT_KEY_UP) {
+        switch (e->key.scancode) {
+        case SDL_SCANCODE_W:
+            p->wasd &= 30;
+            break;
+        case SDL_SCANCODE_A:
+            p->wasd &= 29;
+            break;
+        case SDL_SCANCODE_S:
+            p->wasd &= 27;
+            break;
+        case SDL_SCANCODE_D:
+            p->wasd &= 23;
+            break;
+        case SDL_SCANCODE_SPACE:
+            p->wasd &= 15;
+            break;
+        default:
+            break;
+        }
     }
-  }
 }
 
-void update_player_movement(struct Player *p)
-{
-  if (p->wasd & 1 && p->y > (SCREEN_HEIGHT / 1.5))
-  {
-    p->y -= PLAYER_SPEED;
-  }
-  if (p->wasd & 4 && (p->y + p->size) < SCREEN_HEIGHT)
-  {
-    p->y += PLAYER_SPEED;
-  }
-  if (p->wasd & 2)
-  {
-    p->x -= PLAYER_SPEED;
-  }
-  if (p->wasd & 8)
-  {
-    p->x += PLAYER_SPEED;
-  }
+void update_player_movement(struct Player *p) {
+    if (p->wasd & 1 && p->y > (SCREEN_HEIGHT / 1.5)) {
+        p->y -= PLAYER_SPEED;
+    }
+    if (p->wasd & 4 && (p->y + p->size) < SCREEN_HEIGHT) {
+        p->y += PLAYER_SPEED;
+    }
+    if (p->wasd & 2) {
+        p->x -= PLAYER_SPEED;
+    }
+    if (p->wasd & 8) {
+        p->x += PLAYER_SPEED;
+    }
 
-  p->rect.x = p->x;
-  p->rect.y = p->y;
-  p->rect.w = p->size;
-  p->rect.h = p->size;
+    p->rect.x = p->x;
+    p->rect.y = p->y;
+    p->rect.w = p->size;
+    p->rect.h = p->size;
 }

@@ -1,19 +1,18 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "config.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-#include "config.h"
 
-struct Player
-{
-  char wasd;
-  float x;
-  float y;
-  int bullets_fired;
-  SDL_Texture *texture;
-  SDL_FRect rect;
-  int size;
+struct Player {
+    char wasd;
+    float x;
+    float y;
+    int bullets_fired;
+    SDL_Texture *texture;
+    SDL_FRect rect;
+    int size;
 };
 
 void initialize_player(struct Player *p, SDL_Renderer *renderer);
