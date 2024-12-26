@@ -2,21 +2,21 @@ main: main.o star.o bullet.o player.o utils.o
 	gcc -rpath /usr/local/lib -L/usr/local/lib -lSDL3.0  bin/*.o -o main 
 	./main
 
-main.o: main.c
+main.o: src/main.c
 	mkdir -p bin
-	gcc -I/usr/local/include/SDL3 -c main.c -o bin/main.o
+	gcc -I/usr/local/include/SDL3 -c src/main.c -o bin/main.o
 
-star.o: star.c
-	gcc -I/usr/local/include/SDL3 -c star.c -o bin/star.o
+star.o: src/star.c
+	gcc -I/usr/local/include/SDL3 -c src/star.c -o bin/star.o
 
-bullet.o: bullet.c
-	gcc -I/usr/local/include/SDL3 -c bullet.c -o bin/bullet.o
+bullet.o: src/bullet.c
+	gcc -I/usr/local/include/SDL3 -c src/bullet.c -o bin/bullet.o
 
-player.o: player.c
-	gcc -I/usr/local/include/SDL3 -c player.c -o bin/player.o
+player.o: src/player.c
+	gcc -I/usr/local/include/SDL3 -c src/player.c -o bin/player.o
 
-utils.o: utils.c
-	gcc -I/usr/local/include/SDL3 -c utils.c -o bin/utils.o
+utils.o: src/utils.c
+	gcc -I/usr/local/include/SDL3 -c src/utils.c -o bin/utils.o
 
 
 test: test.o
