@@ -8,12 +8,12 @@
 #include <stdlib.h>
 #include "config.h"
 
-typedef struct Bullet
+struct Bullet
 {
   SDL_FRect rect;
   float velocity;
-} Bullet;
+};
 
-Bullet *create_bullet(Player *p);
+struct Bullet *create_bullet(struct Player *p);
 
 #endif

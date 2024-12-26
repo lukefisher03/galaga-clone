@@ -1,6 +1,6 @@
 #include "player.h"
 
-void initialize_player(Player *p, SDL_Renderer *renderer)
+void initialize_player(struct Player *p, SDL_Renderer *renderer)
 {
   SDL_Surface *surface = NULL;
   char *bmp_path = NULL;
@@ -29,7 +29,7 @@ void initialize_player(Player *p, SDL_Renderer *renderer)
   SDL_DestroySurface(surface);
 }
 
-void handle_input(SDL_Event *e, Player *p)
+void handle_input(SDL_Event *e, struct Player *p)
 {
   if (e->type == SDL_EVENT_KEY_DOWN)
   {
@@ -80,7 +80,7 @@ void handle_input(SDL_Event *e, Player *p)
   }
 }
 
-void update_player_movement(Player *p)
+void update_player_movement(struct Player *p)
 {
   if (p->wasd & 1 && p->y > (SCREEN_HEIGHT / 1.5))
   {

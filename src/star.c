@@ -1,6 +1,6 @@
 #include "star.h"
 
-void initialize_stars(Star star_arr[], size_t size)
+void initialize_stars(struct Star star_arr[], size_t size)
 {
   for (size_t i = 0; i < NUM_STARS; ++i)
   {
@@ -15,12 +15,12 @@ void initialize_stars(Star star_arr[], size_t size)
   }
 }
 
-void render_stars(Star stars[], SDL_Renderer *renderer, Player *player)
+void render_stars(struct Star stars[], SDL_Renderer *renderer, struct Player *player)
 {
   for (size_t i = 0; i < NUM_STARS; ++i)
   {
     stars[i].r.y += stars[i].velocity;
-    
+
     // Stars sway back and forth slightly as the player moves
     if (player->wasd & 2)
     {

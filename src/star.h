@@ -5,7 +5,8 @@
 #include "utils.h"
 #include "config.h"
 #include "player.h"
-typedef struct Star
+
+struct Star
 {
   SDL_FRect r;
   // 0-255
@@ -13,8 +14,8 @@ typedef struct Star
   char velocity;
   // 4 bytes
   char red, green, blue;
-} Star;
+} ;
 
-void initialize_stars(Star star_arr[], size_t size);
-void render_stars(Star stars[], SDL_Renderer *renderer, Player *player);
+void initialize_stars(struct Star star_arr[], size_t size);
+void render_stars(struct Star stars[], SDL_Renderer *renderer, struct Player *player);
 #endif

@@ -15,21 +15,21 @@ static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 static SDL_Texture *texture = NULL;
 
-static Bullet *bullets[NUM_BULLETS];
-static Star stars[NUM_STARS];
+static struct Bullet *bullets[NUM_BULLETS];
+static struct Star stars[NUM_STARS];
 
-typedef struct AppState
+struct AppState
 {
   int paused;
-  Player player;
-} AppState;
+  struct Player player;
+};
 
 Uint32 fire_weapon(void *player, SDL_TimerID id, Uint32 interval)
 {
-  Player *p = (Player *)(player);
+  struct Player *p = (struct Player *)(player);
   if (p->wasd & 16 && p->bullets_fired < NUM_BULLETS)
   {
-    Bullet *b = create_bullet(player);
+    struct Bullet *b = create_bullet(player);
     bullets[++p->bullets_fired - 1] = b;
   }
   return interval;
@@ -37,8 +37,8 @@ Uint32 fire_weapon(void *player, SDL_TimerID id, Uint32 interval)
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 {
-  AppState *as = SDL_calloc(1, sizeof(AppState));
-  Player *player = &as->player;
+  struct AppState *as = SDL_calloc(1, sizeof(struct AppState));
+  struct Player *player = &as->player;
 
   if (!as)
   {
@@ -71,7 +71,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 {
 
-  Player *player = &((AppState *)(appstate))->player;
+  struct Player *player = &((struct AppState *)(appstate))->player;
   if (event->type == SDL_EVENT_QUIT)
   {
     return SDL_APP_SUCCESS;
@@ -79,13 +79,13 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 
   if (event->type == SDL_EVENT_WINDOW_FOCUS_LOST)
   {
-    ((AppState *)appstate)->paused = 1;
+    ((struct AppState *)appstate)->paused = 1;
     return SDL_APP_CONTINUE;
   }
 
   if (event->type == SDL_EVENT_WINDOW_FOCUS_GAINED)
   {
-    ((AppState *)appstate)->paused = 0;
+    ((struct AppState *)appstate)->paused = 0;
     return SDL_APP_CONTINUE;
   }
 
@@ -97,8 +97,8 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 SDL_AppResult SDL_AppIterate(void *appstate)
 {
   Uint64 start = SDL_GetTicksNS();
-  AppState *as = (AppState *)(appstate);
-  Player *player = &(as->player);
+  struct AppState *as = (struct AppState *)(appstate);
+  struct Player *player = &(as->player);
 
   update_player_movement(player);
 
@@ -108,12 +108,12 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     return SDL_APP_CONTINUE;
   }
 
-  SDL_SetRenderDrawColor(renderer, 16, 20, 31, SDL_ALPHA_OPAQUE);
+  SDL_SetRenderDrawColor(renderer, 10, 15, 20, SDL_ALPHA_OPAQUE);
   SDL_RenderClear(renderer);
 
   for (size_t i = 0; i < player->bullets_fired; ++i)
   {
-    Bullet *b = bullets[i];
+    struct Bullet *b = bullets[i];
     b->rect.y -= BULLET_SPEED;
     b->rect.x += i % 2 == 0 ? b->velocity : -b->velocity;
 
