@@ -1,5 +1,8 @@
 .vscode/
 bin/
 .DS_Store
+
 main
+test
+
 test.c

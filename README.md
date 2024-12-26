@@ -16,6 +16,7 @@ Written using SDL in C and that's about it.
 - [ ] Better or maybe even custom sprites
 - [ ] Make sure that my cpu utilization is at least okay
 - [ ] Add screenshots of gameplay (once there is gameplay)
+- [ ] Make Makefile actually look decent
 - [x] Standardize code style
 - [x] Pause game when unfocused
 

@@ -20,9 +20,9 @@ utils.o: src/utils.c
 
 
 test: test.o
-	gcc  test.o -o test
+	gcc  bin/test.o -o test
 	./test
 
-test.o: test.c
-	gcc -c test.c
+test.o: src/test.c
+	gcc -c src/test.c -o bin/test.o
 	
