@@ -18,11 +18,14 @@ player.o: src/player.c
 utils.o: src/utils.c
 	gcc -I/usr/local/include/SDL3 -c src/utils.c -o bin/utils.o
 
+utils.o: src/enemy.c
+	gcc -I/usr/local/include/SDL3 -c src/enemy.c -o bin/enemy.o
+
 
 test: test.o
-	gcc  bin/test.o -o test
+	gcc test.o -o test
 	./test
 
-test.o: src/test.c
-	gcc -c src/test.c -o bin/test.o
+test.o: test.c
+	gcc -c test.c -o test.o
 	

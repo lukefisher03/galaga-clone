@@ -4,13 +4,13 @@ void initialize_player(struct Player *p, SDL_Renderer *renderer) {
     SDL_Surface *surface = NULL;
     char *bmp_path = NULL;
 
-    p->x = (SCREEN_WIDTH - p->size) / 2.0f;
-    p->y = (SCREEN_HEIGHT - p->size) * 0.85f;
-    p->size = SHIP_SIZE;
+    p->x = (SCREEN_WIDTH - SHIP_SIZE) / 2.0f;
+    p->y = (SCREEN_HEIGHT - SHIP_SIZE) * 0.85f;
     p->bullets_fired = 0;
 
-    SDL_asprintf(&bmp_path, "assets/ship.bmp");
-    surface = SDL_LoadBMP(bmp_path);
+    SDL_asprintf(&bmp_path, "%sassets/ship.bmp", SDL_GetBasePath());
+    printf("Initializing player from bmp at path: %s\n", bmp_path);
+    surface = SDL_LoadBMP("assets/ship.bmp");
 
     if (!surface) {
         SDL_Log("Failed to load bmp at %s\n", bmp_path);
@@ -76,7 +76,7 @@ void update_player_movement(struct Player *p) {
     if (p->wasd & 1 && p->y > (SCREEN_HEIGHT / 1.5)) {
         p->y -= PLAYER_SPEED;
     }
-    if (p->wasd & 4 && (p->y + p->size) < SCREEN_HEIGHT) {
+    if (p->wasd & 4 && (p->y + SHIP_SIZE) < SCREEN_HEIGHT) {
         p->y += PLAYER_SPEED;
     }
     if (p->wasd & 2) {
@@ -88,6 +88,6 @@ void update_player_movement(struct Player *p) {
 
     p->rect.x = p->x;
     p->rect.y = p->y;
-    p->rect.w = p->size;
-    p->rect.h = p->size;
+    p->rect.w = SHIP_SIZE;
+    p->rect.h = SHIP_SIZE;
 }

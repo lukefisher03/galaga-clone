@@ -9,7 +9,11 @@
 
 #define NUM_STARS 100
 #define MAX_STAR_SIZE 8.0f
+
 #define NUM_BULLETS 200
 #define BULLET_SPEED 14.0f
+
+#define NUM_ENEMIES 10
+#define ENEMY_SPEED 4.0f
 
 #endif

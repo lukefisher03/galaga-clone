@@ -10,6 +10,7 @@
 #include "player.h"
 #include "star.h"
 #include "utils.h"
+#include "enemy.h"
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
@@ -17,6 +18,7 @@ static SDL_Texture *texture = NULL;
 
 static struct Bullet *bullets[NUM_BULLETS];
 static struct Star stars[NUM_STARS];
+static struct EnemyCluster enemy_cluster;
 
 struct AppState {
     int paused;
@@ -53,7 +55,9 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     }
 
     initialize_player(player, renderer);
+    initialize_enemies(&enemy_cluster, renderer);
     initialize_stars(stars, NUM_STARS);
+
 
     *appstate = as;
 
@@ -121,11 +125,11 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     }
 
     render_stars(stars, renderer, player);
+    render_enemies(&enemy_cluster, renderer);
 
-    wrap_coordinates(&player->x, &player->y, player->size, player->size);
+    wrap_coordinates(&player->x, &player->y, SHIP_SIZE, SHIP_SIZE);
 
     SDL_SetRenderDrawColor(renderer, 150, 150, 150, SDL_ALPHA_OPAQUE);
-    // SDL_RenderFillRects(renderer, stars, NUM_STARS);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     SDL_RenderTexture(renderer, player->texture, NULL, &player->rect);
