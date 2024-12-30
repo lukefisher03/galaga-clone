@@ -86,6 +86,13 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
         return SDL_APP_CONTINUE;
     }
 
+    if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+        ((struct AppState *)appstate)->paused = 1;
+    }
+    if (event->type == SDL_EVENT_MOUSE_BUTTON_UP) {
+        ((struct AppState *)appstate)->paused = 0;
+    }
+
     handle_input(event, player);
 
     return SDL_APP_CONTINUE;

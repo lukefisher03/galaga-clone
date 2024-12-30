@@ -38,3 +38,6 @@ Written using SDL in C.
 - Do **not** typedef structs or enums for this codebase.
 - Assets procured from [here](https://foozlecc.itch.io/void-fleet-pack-2)
 - Yes, I know a Quad Tree was definitely not required for this to run smoothly. But it's a good learning opportunity so why not.
+
+Screenshot of Quad Tree boundaries
+![Quad Tree](assets/quadtree.png)
