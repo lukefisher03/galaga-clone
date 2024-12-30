@@ -34,8 +34,9 @@ enum QT_RESULT qt_add_node(struct QTNode *parent, struct Enemy *e);
 enum QT_RESULT qt_subdivide(struct QTNode *parent);
 char qt_locate_quad(const struct QTNode *parent, const SDL_FRect *r);
 int qt_contains(const struct QTNode *parent, const SDL_FRect *r);
+void qt_initialize(struct QTNode *parent, float width, float height);
+void qt_free(struct QTNode *parent);
 void qt_print_tree(const struct QTNode *parent, SDL_Renderer *renderer);
 void qt_print_boundaries(const struct QTNode *node);
-void qt_initialize(struct QTNode *parent, float width, float height);
 
 #endif

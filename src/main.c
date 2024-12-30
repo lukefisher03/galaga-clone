@@ -93,9 +93,10 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 
 SDL_AppResult SDL_AppIterate(void *appstate) {
     Uint64 start = SDL_GetTicksNS();
-    struct QTNode q_tree;
 
-    qt_initialize(&q_tree, SCREEN_WIDTH, SCREEN_HEIGHT);
+    struct QTNode *q_tree = calloc(1, sizeof(struct QTNode));
+
+    qt_initialize(q_tree, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     struct AppState *as = (struct AppState *)(appstate);
     struct Player *player = &(as->player);
@@ -130,8 +131,8 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     }
 
     render_stars(stars, renderer, player);
-    render_enemies(&as->enemy_cluster, renderer, &q_tree);
-    qt_print_tree(&q_tree, renderer);
+    render_enemies(&as->enemy_cluster, renderer, q_tree);
+    qt_print_tree(q_tree, renderer);
     wrap_coordinates(&player->x, &player->y, SHIP_SIZE, SHIP_SIZE);
 
     SDL_SetRenderDrawColor(renderer, 150, 150, 150, SDL_ALPHA_OPAQUE);
@@ -140,6 +141,8 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     SDL_RenderTexture(renderer, player->texture, NULL, &player->rect);
     SDL_RenderDebugText(renderer, 20, 20, "GALAGA!");
     SDL_RenderPresent(renderer);
+
+    qt_free(q_tree);
 
     return SDL_APP_CONTINUE;
 }

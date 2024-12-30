@@ -216,6 +216,19 @@ void qt_initialize(struct QTNode *parent, float width, float height) {
     parent->isLeaf = 1;
 }
 
+void qt_free(struct QTNode *parent) {
+    if (parent == NULL) {
+        return;
+    }
+
+    qt_free(parent->northeast);
+    qt_free(parent->northwest);
+    qt_free(parent->southeast);
+    qt_free(parent->southwest);
+
+    SDL_free(parent);
+}
+
 void qt_print_tree(const struct QTNode *parent, SDL_Renderer *renderer) {
     if (parent == NULL) {
         return;
@@ -229,8 +242,10 @@ void qt_print_tree(const struct QTNode *parent, SDL_Renderer *renderer) {
 
     printf("\tValues:\n");
     if (parent->e_count) {
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-        SDL_RenderRect(renderer, &parent->boundary);
+        if (renderer != NULL) {
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+            SDL_RenderRect(renderer, &parent->boundary);
+        }
         for (size_t i = 0; i < parent->e_count; i++) {
             printf("\t\tEnemy: x = %f, y = %f\n", parent->e[i]->x,
                    parent->e[i]->y);
