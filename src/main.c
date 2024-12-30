@@ -131,7 +131,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     render_stars(stars, renderer, player);
     render_enemies(&as->enemy_cluster, renderer, &q_tree);
-
+    qt_print_tree(&q_tree, renderer);
     wrap_coordinates(&player->x, &player->y, SHIP_SIZE, SHIP_SIZE);
 
     SDL_SetRenderDrawColor(renderer, 150, 150, 150, SDL_ALPHA_OPAQUE);

@@ -216,7 +216,7 @@ void qt_initialize(struct QTNode *parent, float width, float height) {
     parent->isLeaf = 1;
 }
 
-void qt_print_tree(const struct QTNode *parent) {
+void qt_print_tree(const struct QTNode *parent, SDL_Renderer *renderer) {
     if (parent == NULL) {
         return;
     }
@@ -226,8 +226,11 @@ void qt_print_tree(const struct QTNode *parent) {
     printf("\tBoundary: (%f, %f, %f, %f)\n", parent->boundary.x,
            parent->boundary.y, parent->boundary.x + parent->boundary.w,
            parent->boundary.y + parent->boundary.h);
+
     printf("\tValues:\n");
     if (parent->e_count) {
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+        SDL_RenderRect(renderer, &parent->boundary);
         for (size_t i = 0; i < parent->e_count; i++) {
             printf("\t\tEnemy: x = %f, y = %f\n", parent->e[i]->x,
                    parent->e[i]->y);
@@ -236,10 +239,10 @@ void qt_print_tree(const struct QTNode *parent) {
         printf("\t\tNo values\n");
     }
 
-    qt_print_tree(parent->northwest);
-    qt_print_tree(parent->northeast);
-    qt_print_tree(parent->southeast);
-    qt_print_tree(parent->southwest);
+    qt_print_tree(parent->northwest, renderer);
+    qt_print_tree(parent->northeast, renderer);
+    qt_print_tree(parent->southeast, renderer);
+    qt_print_tree(parent->southwest, renderer);
 }
 
 void qt_print_boundaries(const struct QTNode *node) {

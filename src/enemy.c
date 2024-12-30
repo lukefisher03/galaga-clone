@@ -22,8 +22,10 @@ void initialize_enemies(struct EnemyCluster *enemy_cluster,
                     SDL_GetError());
         }
 
-        e->x = (float)(SHIP_SIZE * i);
-        e->y = 100.0;
+        // e->x = (float)(SHIP_SIZE * i);
+        e->x = SDL_randf() * (SCREEN_WIDTH - SHIP_SIZE);
+        // e->y = 100.0;
+        e->y = SDL_randf() * (SCREEN_WIDTH - SHIP_SIZE);
         e->health = 50;
 
         SDL_DestroySurface(surface);
