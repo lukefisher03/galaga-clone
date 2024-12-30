@@ -5,10 +5,10 @@
 #include <SDL3/SDL.h>
 
 struct Player {
-    char wasd;
     float x;
     float y;
     int bullets_fired;
+    char wasd;
     SDL_Texture *texture;
     SDL_FRect rect;
 };

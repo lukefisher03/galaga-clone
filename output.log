@@ -1,0 +1,134 @@
+
+
+ADDING ENEMY 1! (703.372681, 401.244812, 2.000000, 2.000000)
+
+
+ADDING ENEMY 2! (834.203613, 660.662476, 2.000000, 2.000000)
+
+
+ADDING ENEMY 3! (797.986389, 243.603333, 2.000000, 2.000000)
+
+
+ADDING ENEMY 4! (399.145294, 548.478210, 2.000000, 2.000000)
+
+
+ADDING ENEMY 5! (724.291016, 15.269681, 2.000000, 2.000000)
+
+
+ADDING ENEMY 6! (361.030182, 540.020325, 2.000000, 2.000000)
+
+
+ADDING ENEMY 7! (0.884429, 758.847351, 2.000000, 2.000000)
+
+
+ADDING ENEMY 8! (687.348938, 80.306816, 2.000000, 2.000000)
+
+
+ADDING ENEMY 9! (409.078552, 726.427368, 2.000000, 2.000000)
+
+
+ADDING ENEMY 10! (587.026550, 740.072693, 2.000000, 2.000000)
+
+
+ADDING ENEMY 11! (877.438599, 316.822266, 2.000000, 2.000000)
+
+
+ADDING ENEMY 12! (374.712128, 687.877441, 2.000000, 2.000000)
+
+
+ADDING ENEMY 13! (901.629883, 388.987854, 2.000000, 2.000000)
+
+
+ADDING ENEMY 14! (584.477722, 427.379852, 2.000000, 2.000000)
+
+
+ADDING ENEMY 15! (491.397522, 752.945557, 2.000000, 2.000000)
+
+SUCCESSFULLY CREATED TREE!
+
+Printing node:
+	Leaf Node: 0
+	Boundary: (0.000000, 0.000000, 1000.000000, 800.000000)
+	Values:
+		No values
+
+Printing node:
+	Leaf Node: 1
+	Boundary: (0.000000, 0.000000, 500.000000, 400.000000)
+	Values:
+		No values
+
+Printing node:
+	Leaf Node: 0
+	Boundary: (500.000000, 0.000000, 1000.000000, 400.000000)
+	Values:
+		No values
+
+Printing node:
+	Leaf Node: 1
+	Boundary: (500.000000, 0.000000, 750.000000, 200.000000)
+	Values:
+		Enemy: x = 724.291016, y = 15.269681
+		Enemy: x = 687.348938, y = 80.306816
+
+Printing node:
+	Leaf Node: 1
+	Boundary: (750.000000, 0.000000, 1000.000000, 200.000000)
+	Values:
+		No values
+
+Printing node:
+	Leaf Node: 1
+	Boundary: (750.000000, 200.000000, 1000.000000, 400.000000)
+	Values:
+		Enemy: x = 797.986389, y = 243.603333
+		Enemy: x = 877.438599, y = 316.822266
+		Enemy: x = 901.629883, y = 388.987854
+
+Printing node:
+	Leaf Node: 1
+	Boundary: (500.000000, 200.000000, 750.000000, 400.000000)
+	Values:
+		No values
+
+Printing node:
+	Leaf Node: 1
+	Boundary: (500.000000, 400.000000, 1000.000000, 800.000000)
+	Values:
+		Enemy: x = 703.372681, y = 401.244812
+		Enemy: x = 834.203613, y = 660.662476
+		Enemy: x = 587.026550, y = 740.072693
+		Enemy: x = 584.477722, y = 427.379852
+
+Printing node:
+	Leaf Node: 0
+	Boundary: (0.000000, 400.000000, 500.000000, 800.000000)
+	Values:
+		No values
+
+Printing node:
+	Leaf Node: 1
+	Boundary: (0.000000, 400.000000, 250.000000, 600.000000)
+	Values:
+		No values
+
+Printing node:
+	Leaf Node: 1
+	Boundary: (250.000000, 400.000000, 500.000000, 600.000000)
+	Values:
+		Enemy: x = 399.145294, y = 548.478210
+		Enemy: x = 361.030182, y = 540.020325
+
+Printing node:
+	Leaf Node: 1
+	Boundary: (250.000000, 600.000000, 500.000000, 800.000000)
+	Values:
+		Enemy: x = 409.078552, y = 726.427368
+		Enemy: x = 374.712128, y = 687.877441
+		Enemy: x = 491.397522, y = 752.945557
+
+Printing node:
+	Leaf Node: 1
+	Boundary: (0.000000, 600.000000, 250.000000, 800.000000)
+	Values:
+		Enemy: x = 0.884429, y = 758.847351

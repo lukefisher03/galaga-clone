@@ -4,6 +4,7 @@
 #include <SDL3/SDL.h>
 
 #include "config.h"
+#include "bullet.h"
 
 struct Enemy {
     float x, y;

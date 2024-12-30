@@ -7,29 +7,31 @@
 
 #include "bullet.h"
 #include "config.h"
+#include "enemy.h"
 #include "player.h"
 #include "star.h"
 #include "utils.h"
-#include "enemy.h"
+#include "quadtree.h"
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 static SDL_Texture *texture = NULL;
 
-static struct Bullet *bullets[NUM_BULLETS];
 static struct Star stars[NUM_STARS];
-static struct EnemyCluster enemy_cluster;
 
 struct AppState {
-    int paused;
+    int paused; // 4 bytes
+    struct Bullet *bullets[NUM_BULLETS];
+    struct EnemyCluster enemy_cluster;
     struct Player player;
 };
 
-Uint32 fire_weapon(void *player, SDL_TimerID id, Uint32 interval) {
-    struct Player *p = (struct Player *)(player);
+Uint32 fire_weapon(void *as, SDL_TimerID id, Uint32 interval) {
+    struct AppState *state = (struct AppState *)(as);
+    struct Player *p = &state->player;
     if (p->wasd & 16 && p->bullets_fired < NUM_BULLETS) {
-        struct Bullet *b = create_bullet(player);
-        bullets[++p->bullets_fired - 1] = b;
+        struct Bullet *b = create_bullet(p);
+        state->bullets[++p->bullets_fired - 1] = b;
     }
     return interval;
 }
@@ -37,6 +39,7 @@ Uint32 fire_weapon(void *player, SDL_TimerID id, Uint32 interval) {
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     struct AppState *as = SDL_calloc(1, sizeof(struct AppState));
     struct Player *player = &as->player;
+    printf("sizeof player %lu\n", sizeof(struct Player));
 
     if (!as) {
         return SDL_APP_FAILURE;
@@ -55,13 +58,12 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     }
 
     initialize_player(player, renderer);
-    initialize_enemies(&enemy_cluster, renderer);
+    initialize_enemies(&as->enemy_cluster, renderer);
     initialize_stars(stars, NUM_STARS);
-
 
     *appstate = as;
 
-    SDL_AddTimer(100, &fire_weapon, player);
+    SDL_AddTimer(100, &fire_weapon, as);
 
     SDL_SetRenderVSync(renderer, 1);
     return SDL_APP_CONTINUE;
@@ -105,19 +107,19 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     SDL_RenderClear(renderer);
 
     for (size_t i = 0; i < player->bullets_fired; ++i) {
-        struct Bullet *b = bullets[i];
+        struct Bullet *b = as->bullets[i];
         b->rect.y -= BULLET_SPEED;
         b->rect.x += i % 2 == 0 ? b->velocity : -b->velocity;
 
         if (b->rect.y < 0) {
-            free(bullets[i]);
+            free(as->bullets[i]);
             /* This keeps a compact array. The bullet is freed and a
              * hole is created in the array, so automatically move the
              * last bullet into that space and decrement the bullet
              * count. The order of the array elements doesn't matter.
              */
 
-            bullets[i] = bullets[--player->bullets_fired];
+            as->bullets[i] = as->bullets[--player->bullets_fired];
         }
 
         SDL_SetRenderDrawColor(renderer, 255, 100, 100, SDL_ALPHA_OPAQUE);
@@ -125,7 +127,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     }
 
     render_stars(stars, renderer, player);
-    render_enemies(&enemy_cluster, renderer);
+    render_enemies(&as->enemy_cluster, renderer);
 
     wrap_coordinates(&player->x, &player->y, SHIP_SIZE, SHIP_SIZE);
 

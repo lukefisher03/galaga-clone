@@ -51,3 +51,7 @@ void render_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer) 
         SDL_RenderTexture(renderer, e->texture, NULL, &e->rect);
     }
 }
+
+void check_bullet_collision(struct Bullet *b, struct EnemyCluster *enemy_cluster) {
+    
+}
