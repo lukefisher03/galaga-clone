@@ -4,13 +4,14 @@ Written using SDL in C and that's about it.
 
 ### TODO
 
-- [ ] Refactor bullet shooting method to not loop through entire bullet array
+- [x] Refactor bullet shooting method to not loop through entire bullet array
+- [ ] Collision detection and actually giving damage to enemies when they're shot. _Implement something that is more efficient than O(N^2)_
   - [ ] Build Quad Tree implementation. The tree needs to be able to handle values (enemies) that span multiple quadrants which adds a layer of complexity. (See `quadtree.c` for more TODOs)
     - [x] Add building functionality. (why was this so hard lol)
     - [ ] Add querying functionality.
     - [ ] Implement it into the actual game with live enemies.
 - [x] Split code into multiple files
-- [ ] Add enemies to shoot at (probably multiple enemies)
+- [x] Add enemies to shoot at (probably multiple enemies) (_this is like kinda there, we'll update more later_)
 - [ ] Implement health, possibly do a health bar or hearts?
 - [ ] Start menu?
 
