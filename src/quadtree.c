@@ -227,6 +227,7 @@ void qt_free(struct QTNode *parent) {
     qt_free(parent->southwest);
 
     SDL_free(parent);
+    parent = NULL;
 }
 
 void qt_print_tree(const struct QTNode *parent, SDL_Renderer *renderer) {
