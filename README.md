@@ -5,6 +5,10 @@ Written using SDL in C and that's about it.
 ### TODO
 
 - [ ] Refactor bullet shooting method to not loop through entire bullet array
+  - [ ] Build Quad Tree implementation. The tree needs to be able to handle values (enemies) that span multiple quadrants which adds a layer of complexity. (See `quadtree.c` for more TODOs)
+    - [x] Add building functionality. (why was this so hard lol)
+    - [ ] Add querying functionality.
+    - [ ] Implement it into the actual game with live enemies.
 - [x] Split code into multiple files
 - [ ] Add enemies to shoot at (probably multiple enemies)
 - [ ] Implement health, possibly do a health bar or hearts?

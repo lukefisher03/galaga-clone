@@ -9,9 +9,9 @@
 #include "config.h"
 #include "enemy.h"
 #include "player.h"
+#include "quadtree.h"
 #include "star.h"
 #include "utils.h"
-#include "quadtree.h"
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
@@ -93,6 +93,8 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 
 SDL_AppResult SDL_AppIterate(void *appstate) {
     Uint64 start = SDL_GetTicksNS();
+    struct QTNode q_tree;
+
     struct AppState *as = (struct AppState *)(appstate);
     struct Player *player = &(as->player);
 

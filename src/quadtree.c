@@ -1,6 +1,5 @@
 #include "quadtree.h"
 
-
 enum QT_RESULT qt_add_node(struct QTNode *parent, struct Enemy *e) {
     char within_boundaries = qt_contains(parent, &e->rect);
     if (!within_boundaries) {
@@ -77,6 +76,7 @@ enum QT_RESULT qt_subdivide(struct QTNode *parent) {
     parent->northwest = northwest;
 
     if (parent->northwest == NULL) {
+        free(northwest);
         return QT_MEMORY_ERROR;
     }
 
@@ -95,6 +95,7 @@ enum QT_RESULT qt_subdivide(struct QTNode *parent) {
     parent->northeast = northeast;
 
     if (parent->northeast == NULL) {
+        free(northeast);
         return QT_MEMORY_ERROR;
     }
 
@@ -112,6 +113,7 @@ enum QT_RESULT qt_subdivide(struct QTNode *parent) {
     parent->southeast = southeast;
 
     if (parent->southeast == NULL) {
+        free(southeast);
         return QT_MEMORY_ERROR;
     }
     // Create southwest node.
@@ -128,6 +130,7 @@ enum QT_RESULT qt_subdivide(struct QTNode *parent) {
     parent->southwest = southwest;
 
     if (parent->southwest == NULL) {
+        free(southwest);
         return QT_MEMORY_ERROR;
     }
 
@@ -220,6 +223,7 @@ void qt_print_tree(const struct QTNode *parent) {
 }
 
 void qt_print_boundaries(const struct QTNode *node) {
-    printf("(x=%f, y=%f, w=%f, h=%f, isLeaf=%i, e_count=%i)", node->boundary.x, node->boundary.y,
-           node->boundary.w, node->boundary.h, node->isLeaf, node->e_count);
+    printf("(x=%f, y=%f, w=%f, h=%f, isLeaf=%i, e_count=%i)", node->boundary.x,
+           node->boundary.y, node->boundary.w, node->boundary.h, node->isLeaf,
+           node->e_count);
 }
