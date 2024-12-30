@@ -1,6 +1,6 @@
 # Galaga Inspired Game in C (SDL)
 
-Written using SDL in C and that's about it.
+Written using SDL in C.
 
 ### TODO
 
