@@ -1,6 +1,7 @@
 #include "enemy.h"
 
-void initialize_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer) {
+void initialize_enemies(struct EnemyCluster *enemy_cluster,
+                        SDL_Renderer *renderer) {
     char *bmp_path = NULL;
     SDL_asprintf(&bmp_path, "%sassets/enemy.bmp", SDL_GetBasePath());
     printf("Initializing enemy from bmp at path: %s\n", bmp_path);
@@ -31,10 +32,11 @@ void initialize_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *render
     SDL_free(bmp_path);
 };
 
-void render_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer) {
+void render_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer,
+                    struct QTNode *q_tree) {
     if (enemy_cluster->enemies[0].x <= 0) {
         enemy_cluster->direction = 1;
-    } 
+    }
 
     if (enemy_cluster->enemies[NUM_ENEMIES - 1].x + SHIP_SIZE >= SCREEN_WIDTH) {
         enemy_cluster->direction = -1;
@@ -48,10 +50,10 @@ void render_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer) 
         e->rect.w = SHIP_SIZE;
         e->rect.h = SHIP_SIZE;
 
+        qt_add_node(q_tree, e);
         SDL_RenderTexture(renderer, e->texture, NULL, &e->rect);
     }
 }
 
-void check_bullet_collision(struct Bullet *b, struct EnemyCluster *enemy_cluster) {
-    
-}
+void check_bullet_collision(struct Bullet *b,
+                            struct EnemyCluster *enemy_cluster) {}

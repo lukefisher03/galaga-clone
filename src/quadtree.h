@@ -11,7 +11,6 @@
 #define MAX_DEPTH NUM_ENEMIES
 #define MAX_NODE_VALUES 10
 
-
 enum QT_RESULT {
     QT_SUCCESS,             // 0
     QT_MAX_VALUES_OVERFLOW, // 1
@@ -37,5 +36,6 @@ char qt_locate_quad(const struct QTNode *parent, const SDL_FRect *r);
 int qt_contains(const struct QTNode *parent, const SDL_FRect *r);
 void qt_print_tree(const struct QTNode *parent);
 void qt_print_boundaries(const struct QTNode *node);
+void qt_initialize(struct QTNode *parent, float width, float height);
 
 #endif

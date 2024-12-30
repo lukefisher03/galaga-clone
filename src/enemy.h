@@ -3,8 +3,9 @@
 
 #include <SDL3/SDL.h>
 
-#include "config.h"
 #include "bullet.h"
+#include "config.h"
+#include "quadtree.h"
 
 struct Enemy {
     float x, y;
@@ -18,6 +19,8 @@ struct EnemyCluster {
     struct Enemy enemies[NUM_ENEMIES];
 };
 
-void initialize_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer);
-void render_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer);
+void initialize_enemies(struct EnemyCluster *enemy_cluster,
+                        SDL_Renderer *renderer);
+void render_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer,
+                    struct QTNode *q_tree);
 #endif

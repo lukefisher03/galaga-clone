@@ -95,6 +95,8 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     Uint64 start = SDL_GetTicksNS();
     struct QTNode q_tree;
 
+    qt_initialize(&q_tree, SCREEN_WIDTH, SCREEN_HEIGHT);
+
     struct AppState *as = (struct AppState *)(appstate);
     struct Player *player = &(as->player);
 
@@ -123,13 +125,12 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
             as->bullets[i] = as->bullets[--player->bullets_fired];
         }
-
         SDL_SetRenderDrawColor(renderer, 255, 100, 100, SDL_ALPHA_OPAQUE);
         SDL_RenderRect(renderer, &(b->rect));
     }
 
     render_stars(stars, renderer, player);
-    render_enemies(&as->enemy_cluster, renderer);
+    render_enemies(&as->enemy_cluster, renderer, &q_tree);
 
     wrap_coordinates(&player->x, &player->y, SHIP_SIZE, SHIP_SIZE);
 

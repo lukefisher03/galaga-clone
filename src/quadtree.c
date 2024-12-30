@@ -196,6 +196,26 @@ char qt_locate_quad(const struct QTNode *parent, const SDL_FRect *r) {
     return possible_quadrant;
 }
 
+void qt_initialize(struct QTNode *parent, float width, float height) {
+
+    SDL_FRect boundary = {
+        .x = 0,
+        .y = 0,
+        .w = width,
+        .h = height,
+    };
+
+    parent->boundary = boundary;
+
+    parent->northeast = NULL;
+    parent->northwest = NULL;
+    parent->southwest = NULL;
+    parent->southeast = NULL;
+
+    parent->e_count = 0;
+    parent->isLeaf = 1;
+}
+
 void qt_print_tree(const struct QTNode *parent) {
     if (parent == NULL) {
         return;

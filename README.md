@@ -35,3 +35,4 @@ Written using SDL in C and that's about it.
 
 - Do **not** typedef structs for this codebase.
 - Assets procured from [here](https://foozlecc.itch.io/void-fleet-pack-2)
+- Yes, I know a Quad Tree was definitely not required for this to run smoothly. But it's a good learning opportunity so why not.
