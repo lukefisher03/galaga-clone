@@ -25,6 +25,4 @@ void initialize_enemies(struct EnemyCluster *enemy_cluster,
 void render_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer,
                     struct QTNode *q_tree);
 
-void check_bullet_collision(struct Bullet *b,
-                            struct EnemyCluster *enemy_cluster);
 #endif

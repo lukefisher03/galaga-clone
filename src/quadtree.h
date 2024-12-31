@@ -36,11 +36,12 @@ struct QTNode {
 
 enum QT_RESULT qt_add_node(struct QTNode *parent, struct Enemy *value);
 enum QT_RESULT qt_subdivide(struct QTNode *parent);
-char qt_locate_quad(const SDL_FRect *boundary, const SDL_FRect *r);
-int qt_contains(const SDL_FRect *boundary, const SDL_FRect *r);
+char qt_locate_quad(SDL_FRect *boundary, SDL_FRect *r);
+int qt_contains(SDL_FRect *boundary, SDL_FRect *r);
 void qt_initialize(struct QTNode *parent, float width, float height);
 void qt_free(struct QTNode *parent);
-void qt_print_tree(const struct QTNode *parent, SDL_Renderer *renderer);
-void qt_print_boundaries(const struct QTNode *node);
+void qt_print_tree(struct QTNode *parent, SDL_Renderer *renderer);
+void qt_print_boundaries(struct QTNode *node);
+struct Enemy *qt_query(struct QTNode *parent, SDL_FRect *r);
 
 #endif

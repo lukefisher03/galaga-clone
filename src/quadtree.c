@@ -6,8 +6,6 @@ enum QT_RESULT qt_add_node(struct QTNode *parent, struct Enemy *value) {
     if (!within_boundaries) {
         // Don't need to run this recursively if the enemy isn't within these
         // bounds.
-        printf("NOT WITHIN BOUNDS (%f, %f, %f, %f)\n", parent->boundary.x,
-               parent->boundary.y, parent->boundary.w, parent->boundary.h);
         return QT_VALUE_OUT_OF_BOUNDS;
     }
 
@@ -138,7 +136,7 @@ enum QT_RESULT qt_subdivide(struct QTNode *parent) {
     return QT_SUCCESS;
 }
 
-int qt_contains(const SDL_FRect *boundary, const SDL_FRect *r) {
+int qt_contains(SDL_FRect *boundary, SDL_FRect *r) {
     // zero if it doesn't contain the rect, 1 if it does.
     float parent_x_mid = boundary->x + boundary->w / 2;
     float parent_y_mid = boundary->y + boundary->h / 2;
@@ -156,7 +154,7 @@ int qt_contains(const SDL_FRect *boundary, const SDL_FRect *r) {
     return 1;
 }
 
-char qt_locate_quad(const SDL_FRect *boundary, const SDL_FRect *r) {
+char qt_locate_quad(SDL_FRect *boundary, SDL_FRect *r) {
     char possible_quadrant = 0b1111; // This number is represented in binary
     // 1 1 1 1 are the quadrants from northwest (MSB) going clockwise to
     // southwest (LSB)
@@ -229,7 +227,7 @@ void qt_free(struct QTNode *parent) {
     parent = NULL;
 }
 
-void qt_print_tree(const struct QTNode *parent, SDL_Renderer *renderer) {
+void qt_print_tree(struct QTNode *parent, SDL_Renderer *renderer) {
     if (parent == NULL) {
         return;
     }
@@ -260,8 +258,56 @@ void qt_print_tree(const struct QTNode *parent, SDL_Renderer *renderer) {
     qt_print_tree(parent->southwest, renderer);
 }
 
-void qt_print_boundaries(const struct QTNode *node) {
+void qt_print_boundaries(struct QTNode *node) {
     printf("(x=%f, y=%f, w=%f, h=%f, is_leaf=%i, values_count=%i)",
            node->boundary.x, node->boundary.y, node->boundary.w,
            node->boundary.h, node->is_leaf, node->values_count);
 }
+
+// Query a tree for any collisions with a given SDL_FRect. Will not return
+// multiple values, only the first it comes across.
+struct Enemy *qt_query(struct QTNode *parent, SDL_FRect *r) {
+    printf("Running this\n");
+    printf("%p\n", &parent->boundary);
+
+    if (!qt_contains(&parent->boundary, r)) {
+        return NULL;
+    }
+
+    char quad = qt_locate_quad(&parent->boundary, r);
+    if (!quad || parent->is_leaf) {
+        for (size_t i = 0; i < parent->values_count; ++i) {
+            if (SDL_HasRectIntersectionFloat(&parent->values[i]->rect, r)) {
+                return parent->values[i];
+            }
+        }
+        return NULL;
+    } else {
+        switch (quad) {
+        case 0b1000:
+            printf("NORTHWEST QUAD\n");
+            return qt_query(parent->northwest, r);
+            break;
+        case 0b0100:
+            printf("NORTHEAST QUAD\n");
+            return qt_query(parent->northeast, r);
+            break;
+        case 0b0010:
+            printf("SOUTHEAST QUAD\n");
+            return qt_query(parent->southeast, r);
+            break;
+        case 0b0001:
+            printf("SOUTHWEST QUAD\n");
+            return qt_query(parent->southwest, r);
+            break;
+        default:
+            printf("THIS IS NULL!");
+            // This shouldn't happen
+            return NULL;
+            break;
+        }
+    }
+
+    // No enemy was found
+    return NULL;
+};
