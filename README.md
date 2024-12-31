@@ -2,6 +2,13 @@
 
 Written using SDL in C. Utilizes Quad Tree collision detection. Hoping to implement some other fun algorithms additionally.
 
+
+#### Screenshot of Quad Tree boundaries
+
+Here you can see how the quad tree divides up the space and then the red hit box around an enemy that's just been hit. Notice how collisions work despite the enemy spanning multiple quadrants.
+![Quad Tree](assets/quadtree.png)
+
+
 ### TODO
 
 - [x] Refactor bullet shooting method to not loop through entire bullet array.
@@ -38,8 +45,3 @@ Written using SDL in C. Utilizes Quad Tree collision detection. Hoping to implem
 - Do **not** typedef structs or enums for this codebase.
 - Assets procured from [here](https://foozlecc.itch.io/void-fleet-pack-2)
 - Yes, I know a Quad Tree was definitely not required for this to run smoothly. But it's a good learning opportunity so why not.
-
-#### Screenshot of Quad Tree boundaries
-
-Here you can see how the quad tree divides up the space and then the red hit box around an enemy that's just been hit. Notice how collisions work despite the enemy spanning multiple quadrants.
-![Quad Tree](assets/quadtree.png)
