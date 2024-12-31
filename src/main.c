@@ -141,7 +141,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
             as->bullets[i] = as->bullets[--player->bullets_fired];
         }
 
-        SDL_SetRenderDrawColor(renderer, 255, 100, 100, SDL_ALPHA_OPAQUE);
+        SDL_SetRenderDrawColor(renderer, 3, 215, 255, SDL_ALPHA_OPAQUE);
         SDL_RenderRect(renderer, &(b->rect));
     }
 

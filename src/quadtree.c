@@ -241,7 +241,7 @@ void qt_print_tree(struct QTNode *parent, SDL_Renderer *renderer) {
     printf("\tValues:\n");
     if (parent->values_count) {
         if (renderer != NULL) {
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+            SDL_SetRenderDrawColor(renderer, 60, 60, 60, SDL_ALPHA_OPAQUE);
             SDL_RenderRect(renderer, &parent->boundary);
         }
         for (size_t i = 0; i < parent->values_count; i++) {
