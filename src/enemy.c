@@ -26,7 +26,7 @@ void initialize_enemies(struct EnemyCluster *enemy_cluster,
         // e->x = (float)(SHIP_SIZE * i);
         e->x = SDL_randf() * (SCREEN_WIDTH - SHIP_SIZE);
         // e->y = 100.0;
-        e->y = SDL_randf() * (SCREEN_WIDTH - SHIP_SIZE);
+        e->y = SDL_randf() * (SCREEN_HEIGHT - 200);
         e->health = 50;
 
         SDL_DestroySurface(surface);
@@ -47,6 +47,10 @@ void render_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer,
 
     for (size_t i = 0; i < NUM_ENEMIES; i++) {
         struct Enemy *e = &enemy_cluster->enemies[i];
+        // don't render dead enemies
+        if (e->health == 0) {
+            continue;
+        }
         e->x += ENEMY_SPEED * enemy_cluster->direction;
         e->rect.x = e->x;
         e->rect.y = e->y;

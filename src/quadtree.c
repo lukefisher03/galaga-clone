@@ -267,11 +267,19 @@ void qt_print_boundaries(struct QTNode *node) {
 // Query a tree for any collisions with a given SDL_FRect. Will not return
 // multiple values, only the first it comes across.
 struct Enemy *qt_query(struct QTNode *parent, SDL_FRect *r) {
-    printf("Running this\n");
-    printf("%p\n", &parent->boundary);
-
     if (!qt_contains(&parent->boundary, r)) {
         return NULL;
+    }
+
+    // In this Quad tree parents may have values as opposed to just leaf nodes
+    // containing values. So we still need to loop through the parent and see if
+    // there's any values that overlap with whatever we're checking against.
+    if (parent->values_count > 0) {
+        for (size_t i = 0; i < parent->values_count; ++i) {
+            if (SDL_HasRectIntersectionFloat(&parent->values[i]->rect, r)) {
+                return parent->values[i];
+            }
+        }
     }
 
     char quad = qt_locate_quad(&parent->boundary, r);
@@ -285,23 +293,18 @@ struct Enemy *qt_query(struct QTNode *parent, SDL_FRect *r) {
     } else {
         switch (quad) {
         case 0b1000:
-            printf("NORTHWEST QUAD\n");
             return qt_query(parent->northwest, r);
             break;
         case 0b0100:
-            printf("NORTHEAST QUAD\n");
             return qt_query(parent->northeast, r);
             break;
         case 0b0010:
-            printf("SOUTHEAST QUAD\n");
             return qt_query(parent->southeast, r);
             break;
         case 0b0001:
-            printf("SOUTHWEST QUAD\n");
             return qt_query(parent->southwest, r);
             break;
         default:
-            printf("THIS IS NULL!");
             // This shouldn't happen
             return NULL;
             break;

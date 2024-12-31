@@ -39,7 +39,6 @@ Uint32 fire_weapon(void *as, SDL_TimerID id, Uint32 interval) {
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     struct AppState *as = SDL_calloc(1, sizeof(struct AppState));
     struct Player *player = &as->player;
-    printf("sizeof player %lu\n", sizeof(struct Player));
 
     if (!as) {
         return SDL_APP_FAILURE;
@@ -124,13 +123,14 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         b->rect.y -= BULLET_SPEED;
         b->rect.x += i % 2 == 0 ? b->velocity : -b->velocity;
 
-        printf("\n%f %f %f %f %p\n", q_tree->boundary.x, q_tree->boundary.y,
-               q_tree->boundary.w, q_tree->boundary.h, &q_tree->boundary);
-
         struct Enemy *collided_enemy = qt_query(q_tree, &b->rect);
-        printf("\n%f %f %f %f\n", q_tree->boundary.x, q_tree->boundary.y,
-               q_tree->boundary.w, q_tree->boundary.h);
-        if (b->rect.y < 0) {
+        if (collided_enemy != NULL) {
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+            SDL_RenderRect(renderer, &collided_enemy->rect);
+            collided_enemy->health = 0;
+        }
+
+        if (b->rect.y < 0 || collided_enemy != NULL) {
             free(as->bullets[i]);
             /* This keeps a compact array. The bullet is freed and a
              * hole is created in the array, so automatically move the
@@ -141,17 +141,12 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
             as->bullets[i] = as->bullets[--player->bullets_fired];
         }
 
-        if (collided_enemy != NULL) {
-            SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-            SDL_RenderRect(renderer, &collided_enemy->rect);
-        }
-
         SDL_SetRenderDrawColor(renderer, 255, 100, 100, SDL_ALPHA_OPAQUE);
         SDL_RenderRect(renderer, &(b->rect));
     }
 
     render_stars(stars, renderer, player);
-    // qt_print_tree(q_tree, renderer);
+    qt_print_tree(q_tree, renderer);
     wrap_coordinates(&player->x, &player->y, SHIP_SIZE, SHIP_SIZE);
 
     SDL_SetRenderDrawColor(renderer, 150, 150, 150, SDL_ALPHA_OPAQUE);
