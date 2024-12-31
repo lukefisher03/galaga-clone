@@ -52,7 +52,7 @@ void render_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer,
         e->rect.w = SHIP_SIZE;
         e->rect.h = SHIP_SIZE;
 
-        qt_add_node(q_tree, e);
+        qt_add_node(q_tree, &e->rect);
         SDL_RenderTexture(renderer, e->texture, NULL, &e->rect);
     }
 }
