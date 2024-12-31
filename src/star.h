@@ -1,9 +1,9 @@
 #ifndef STAR_H
 #define STAR_H
-#include "config.h"
-#include "player.h"
-#include "utils.h"
+
 #include <SDL3/SDL.h>
+
+struct Player;
 
 struct Star {
     SDL_FRect r;

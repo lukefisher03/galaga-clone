@@ -1,4 +1,5 @@
 #include "enemy.h"
+#include "quadtree.h"
 
 void initialize_enemies(struct EnemyCluster *enemy_cluster,
                         SDL_Renderer *renderer) {
@@ -52,10 +53,12 @@ void render_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer,
         e->rect.w = SHIP_SIZE;
         e->rect.h = SHIP_SIZE;
 
-        qt_add_node(q_tree, &e->rect);
+        qt_add_node(q_tree, e);
         SDL_RenderTexture(renderer, e->texture, NULL, &e->rect);
     }
 }
 
 void check_bullet_collision(struct Bullet *b,
-                            struct EnemyCluster *enemy_cluster) {}
+                            struct EnemyCluster *enemy_cluster) {
+    // TODO: Implement this
+}

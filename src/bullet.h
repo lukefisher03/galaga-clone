@@ -1,11 +1,11 @@
 #ifndef BULLET_H
 #define BULLET_H
 
-#include "player.h"
-
 #include "config.h"
 #include <SDL3/SDL.h>
 #include <stdlib.h>
+
+struct Player;
 
 struct Bullet {
     SDL_FRect rect;

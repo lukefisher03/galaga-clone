@@ -1,4 +1,6 @@
 #include "star.h"
+#include "player.h"
+#include "utils.h"
 
 void initialize_stars(struct Star star_arr[], size_t size) {
     for (size_t i = 0; i < NUM_STARS; ++i) {

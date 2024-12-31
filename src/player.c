@@ -1,4 +1,5 @@
 #include "player.h"
+#include "config.h"
 
 void initialize_player(struct Player *p, SDL_Renderer *renderer) {
     SDL_Surface *surface = NULL;

@@ -1,7 +1,8 @@
 #include "quadtree.h"
+#include "enemy.h"
 
-enum QT_RESULT qt_add_node(struct QTNode *parent, SDL_FRect *value) {
-    char within_boundaries = qt_contains(&parent->boundary, value);
+enum QT_RESULT qt_add_node(struct QTNode *parent, struct Enemy *value) {
+    char within_boundaries = qt_contains(&parent->boundary, &value->rect);
     if (!within_boundaries) {
         // Don't need to run this recursively if the enemy isn't within these
         // bounds.
@@ -34,7 +35,7 @@ enum QT_RESULT qt_add_node(struct QTNode *parent, SDL_FRect *value) {
     } else {
         // If it isn't a leaf, need to identify which quadrant/s to go down.
 
-        switch (qt_locate_quad(&parent->boundary, value)) {
+        switch (qt_locate_quad(&parent->boundary, &value->rect)) {
         case 0b1000:
             return qt_add_node(parent->northwest, value);
             break;

@@ -13,6 +13,8 @@
 #define MAX_DEPTH NUM_ENEMIES
 #define MAX_NODE_VALUES 10
 
+struct Enemy;
+
 enum QT_RESULT {
     QT_SUCCESS,             // 0
     QT_MAX_VALUES_OVERFLOW, // 1
@@ -22,7 +24,7 @@ enum QT_RESULT {
 };
 
 struct QTNode {
-    SDL_FRect *values[MAX_NODE_VALUES];
+    struct Enemy *values[MAX_NODE_VALUES];
     struct QTNode *northwest;
     struct QTNode *northeast;
     struct QTNode *southeast;
@@ -32,7 +34,7 @@ struct QTNode {
     int values_count;
 };
 
-enum QT_RESULT qt_add_node(struct QTNode *parent, SDL_FRect *value);
+enum QT_RESULT qt_add_node(struct QTNode *parent, struct Enemy *value);
 enum QT_RESULT qt_subdivide(struct QTNode *parent);
 char qt_locate_quad(const SDL_FRect *boundary, const SDL_FRect *r);
 int qt_contains(const SDL_FRect *boundary, const SDL_FRect *r);

@@ -1,4 +1,5 @@
 #include "bullet.h"
+#include "player.h"
 
 struct Bullet *create_bullet(struct Player *p) {
     struct Bullet *b = malloc(sizeof(struct Bullet));

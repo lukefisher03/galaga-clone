@@ -3,9 +3,10 @@
 
 #include <SDL3/SDL.h>
 
-#include "bullet.h"
 #include "config.h"
-#include "quadtree.h"
+
+struct QTNode;
+struct Bullet;
 
 struct Enemy {
     float x, y;
@@ -23,4 +24,7 @@ void initialize_enemies(struct EnemyCluster *enemy_cluster,
                         SDL_Renderer *renderer);
 void render_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer,
                     struct QTNode *q_tree);
+
+void check_bullet_collision(struct Bullet *b,
+                            struct EnemyCluster *enemy_cluster);
 #endif

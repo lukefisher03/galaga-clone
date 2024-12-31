@@ -1,6 +1,5 @@
 main: main.o star.o bullet.o player.o utils.o quadtree.o enemy.o
 	gcc -rpath /usr/local/lib -L/usr/local/lib -lSDL3.0  bin/*.o -o main 
-	./main
 
 test: test.o quadtree.o
 	gcc -rpath /usr/local/lib -L/usr/local/lib -lSDL3.0 test.o bin/quadtree.o bin/enemy.o -o test

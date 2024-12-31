@@ -1,7 +1,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "config.h"
 #include <SDL3/SDL.h>
 
 struct Player {
