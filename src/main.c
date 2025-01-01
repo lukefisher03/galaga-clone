@@ -28,6 +28,11 @@ struct AppState {
 
 Uint32 fire_weapon(void *as, SDL_TimerID id, Uint32 interval) {
     struct AppState *state = (struct AppState *)(as);
+
+    if (state->paused) {
+        return interval;
+    }
+
     struct Player *p = &state->player;
     if (p->wasd & 16 && p->bullets_fired < NUM_BULLETS) {
         struct Bullet *b = create_bullet(p);
@@ -85,11 +90,8 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
         return SDL_APP_CONTINUE;
     }
 
-    if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-        ((struct AppState *)appstate)->paused = 1;
-    }
     if (event->type == SDL_EVENT_MOUSE_BUTTON_UP) {
-        ((struct AppState *)appstate)->paused = 0;
+        ((struct AppState *)appstate)->paused = !((struct AppState *)appstate)->paused;
     }
 
     handle_input(event, player);
