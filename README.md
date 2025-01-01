@@ -12,11 +12,11 @@ Here you can see how the quad tree divides up the space and then the red hit box
 ### TODO
 
 - [x] Refactor bullet shooting method to not loop through entire bullet array.
-- [ ] Collision detection and actually giving damage to enemies when they're shot. _Implement something that is more efficient than O(N^2)_
-  - [ ] Build Quad Tree implementation. The tree needs to be able to handle values (enemies) that span multiple quadrants which adds a layer of complexity. (See `quadtree.c` for more TODOs)
+- [x] Collision detection and actually giving damage to enemies when they're shot. _Implement something that is more efficient than O(N^2)_
+  - [x] Build Quad Tree implementation. The tree needs to be able to handle values (enemies) that span multiple quadrants which adds a layer of complexity. (See `quadtree.c` for more TODOs)
     - [x] Add building functionality. (why was this so hard lol)
-    - [ ] Add querying functionality.
-    - [ ] Implement it into the actual game with live enemies.
+    - [x] Add querying functionality.
+    - [x] Implement it into the actual game with live enemies. _Collision detection works!_
 - [x] Split code into multiple files.
 - [x] Add enemies to shoot at (probably multiple enemies). _This is like kinda there, we'll update more later once collisions are working_
 - [ ] Implement health, possibly do a health bar or hearts?
