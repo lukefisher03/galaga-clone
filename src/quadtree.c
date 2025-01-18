@@ -232,24 +232,11 @@ void qt_print_tree(struct QTNode *parent, SDL_Renderer *renderer) {
         return;
     }
 
-    printf("\nPrinting node:\n");
-    printf("\tLeaf Node: %i\n", parent->is_leaf);
-    printf("\tBoundary: (%f, %f, %f, %f)\n", parent->boundary.x,
-           parent->boundary.y, parent->boundary.x + parent->boundary.w,
-           parent->boundary.y + parent->boundary.h);
-
-    printf("\tValues:\n");
     if (parent->values_count) {
         if (renderer != NULL) {
             SDL_SetRenderDrawColor(renderer, 60, 60, 60, SDL_ALPHA_OPAQUE);
             SDL_RenderRect(renderer, &parent->boundary);
         }
-        for (size_t i = 0; i < parent->values_count; i++) {
-            printf("\t\tValue: x = %f, y = %f\n", parent->values[i]->x,
-                   parent->values[i]->y);
-        }
-    } else {
-        printf("\t\tNo values\n");
     }
 
     qt_print_tree(parent->northwest, renderer);
