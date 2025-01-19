@@ -22,7 +22,6 @@ static struct Star stars[NUM_STARS];
 struct AppState {
     int paused; // 4 bytes
     struct Bullet *bullets[NUM_BULLETS];
-    struct EnemyCluster enemy_cluster;
     struct Player player;
 };
 
@@ -62,7 +61,6 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     }
 
     initialize_player(player, renderer);
-    initialize_enemies(&as->enemy_cluster, renderer);
     initialize_stars(stars, NUM_STARS);
 
     *appstate = as;
@@ -118,7 +116,6 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     SDL_SetRenderDrawColor(renderer, 10, 15, 20, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
-    render_enemies(&as->enemy_cluster, renderer, q_tree);
 
     for (size_t i = 0; i < player->bullets_fired; ++i) {
         struct Bullet *b = as->bullets[i];

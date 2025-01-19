@@ -14,6 +14,9 @@
 #define BULLET_SPEED 14.0f
 
 #define NUM_ENEMIES 50
+#define MAX_ENEMY_CLUSTER_SIZE 50
 #define ENEMY_SPEED 4.0f
+#define MAX_ENEMY_HEALTH 100
+
 
 #endif

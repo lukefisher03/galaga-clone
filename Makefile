@@ -1,4 +1,4 @@
-main: main.o star.o bullet.o player.o utils.o quadtree.o enemy.o
+main: main.o star.o bullet.o player.o utils.o quadtree.o enemy.o level.o
 	gcc -g -rpath /usr/local/lib -L/usr/local/lib -lSDL3.0  bin/*.o -o main 
 
 test: test.o quadtree.o
@@ -24,6 +24,9 @@ utils.o: src/utils.c
 
 enemy.o: src/enemy.c
 	gcc -g -I/usr/local/include/SDL3 -c src/enemy.c -o bin/enemy.o
+
+level.o: src/level.c
+	gcc -g -I/usr/local/include/SDL3 -c src/level.c -o bin/level.o
 
 quadtree.o: src/quadtree.c
 	gcc -g -I/usr/local/include/SDL3 -c src/quadtree.c -o bin/quadtree.o

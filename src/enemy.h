@@ -16,13 +16,11 @@ struct Enemy {
 };
 
 struct EnemyCluster {
-    int direction;
-    struct Enemy enemies[NUM_ENEMIES];
+    struct Enemy *enemies;
+    int size;
 };
 
-void initialize_enemies(struct EnemyCluster *enemy_cluster,
-                        SDL_Renderer *renderer);
-void render_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer,
-                    struct QTNode *q_tree);
+struct EnemyCluster *create_enemy_cluster(int count, SDL_Renderer *renderer);
+struct Enemy *create_default_enemy(int x, int y);
 
 #endif
