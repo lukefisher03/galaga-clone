@@ -3,15 +3,12 @@
 
 #include <SDL3/SDL.h>
 
-#include "config.h"
-
 struct QTNode;
 struct Bullet;
 
 struct Enemy {
     float x, y;
     SDL_FRect rect;
-    SDL_Texture *texture;
     int health;
 };
 
@@ -21,6 +18,6 @@ struct EnemyCluster {
 };
 
 struct EnemyCluster *create_enemy_cluster(int count, SDL_Renderer *renderer);
-struct Enemy *create_default_enemy(int x, int y);
+void initialize_default_enemy(struct Enemy *e, int x, int y);
 
 #endif

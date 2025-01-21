@@ -1,5 +1,6 @@
 #include "enemy.h"
 #include "quadtree.h"
+#include "config.h"
 
 
 struct EnemyCluster *create_enemy_cluster(int size, SDL_Renderer *renderer) {
@@ -39,13 +40,20 @@ struct EnemyCluster *create_enemy_cluster(int size, SDL_Renderer *renderer) {
     for (size_t i = 0; i < size; ++i) {
         struct Enemy e = enemy_cluster->enemies[i];
         e.health = MAX_ENEMY_HEALTH;
-        e.texture = texture;
     }
 
     return enemy_cluster;
 }
 
-struct Enemy *create_default_enemy(int x, int y) {
-    
+void initialize_default_enemy(struct Enemy *e, int x, int y) {
+    e->health = 100;
+    e->x = x;
+    e->y = y;
+
+    SDL_FRect r;
+    r.w = SHIP_SIZE;
+    r.h = SHIP_SIZE;
+    r.x = x;
+    r.y = y;
 }
 

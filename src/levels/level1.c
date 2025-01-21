@@ -24,23 +24,15 @@ struct Level *build_level_1(SDL_Renderer *renderer) {
     char *bmp_path = NULL;
     SDL_asprintf(&bmp_path, "%sassets/enemy.bmp", SDL_GetBasePath());
 
-    SDL_Surface *bmp_surface = SDL_LoadBMP(bmp_path);
-    SDL_free(bmp_path);
-
-    if (!bmp_surface) {
-        printf("Could not load texture for enemy cluster");
-        return NULL;
-    }
-
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, bmp_surface);
-    SDL_DestroySurface(bmp_surface);
-
     for (size_t i = 0; i < level->num_clusters; ++i) {
         struct EnemyCluster *cluster = level->enemy_clusters[i];
         cluster->enemies = calloc(5, sizeof(struct Enemy));
 
         for (size_t j = 0; j < 5; ++j) {
-            // Initialize enemy
+            initialize_default_enemy(&cluster->enemies[j], 10 * (SHIP_SIZE * j), 200);
         }
     }
+
+    return level;
 }
+

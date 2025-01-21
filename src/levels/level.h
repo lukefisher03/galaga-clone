@@ -3,8 +3,8 @@
 
 #include <SDL3/SDL.h>
 
-#include "config.h"
-#include "enemy.h"
+#include "../config.h"
+#include "../enemy.h"
 
 struct Level {
     // Resizable array of enemy clusters
