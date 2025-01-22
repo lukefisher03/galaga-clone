@@ -1,7 +1,6 @@
 #include "enemy.h"
-#include "quadtree.h"
 #include "config.h"
-
+#include "quadtree.h"
 
 struct EnemyCluster *create_enemy_cluster(int size, SDL_Renderer *renderer) {
     if (size > MAX_ENEMY_CLUSTER_SIZE) {
@@ -23,20 +22,6 @@ struct EnemyCluster *create_enemy_cluster(int size, SDL_Renderer *renderer) {
         return NULL;
     }
 
-    char *bmp_path = NULL;
-    SDL_asprintf(&bmp_path, "%sassets/enemy.bmp", SDL_GetBasePath());
-
-    SDL_Surface *bmp_surface = SDL_LoadBMP(bmp_path);
-    SDL_free(bmp_path);
-
-    if (!bmp_surface) {
-        printf("Could not load texture for enemy cluster");
-        return NULL;
-    }
-
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, bmp_surface);
-    SDL_DestroySurface(bmp_surface);
-
     for (size_t i = 0; i < size; ++i) {
         struct Enemy e = enemy_cluster->enemies[i];
         e.health = MAX_ENEMY_HEALTH;
@@ -55,5 +40,6 @@ void initialize_default_enemy(struct Enemy *e, int x, int y) {
     r.h = SHIP_SIZE;
     r.x = x;
     r.y = y;
-}
 
+    e->rect = r;
+}

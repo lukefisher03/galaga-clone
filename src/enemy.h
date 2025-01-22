@@ -13,6 +13,7 @@ struct Enemy {
 };
 
 struct EnemyCluster {
+    SDL_Texture *texture;
     struct Enemy *enemies;
     int size;
 };

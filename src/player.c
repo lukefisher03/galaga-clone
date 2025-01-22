@@ -1,30 +1,16 @@
 #include "player.h"
 #include "config.h"
+#include "utils.h"
 
 void initialize_player(struct Player *p, SDL_Renderer *renderer) {
-    SDL_Surface *surface = NULL;
-    char *bmp_path = NULL;
-
     p->x = (SCREEN_WIDTH - SHIP_SIZE) / 2.0f;
     p->y = (SCREEN_HEIGHT - SHIP_SIZE) * 0.85f;
     p->bullets_fired = 0;
 
-    SDL_asprintf(&bmp_path, "%sassets/ship.bmp", SDL_GetBasePath());
-    printf("Initializing player from bmp at path: %s\n", bmp_path);
-    surface = SDL_LoadBMP("assets/ship.bmp");
-
-    if (!surface) {
-        SDL_Log("Failed to load bmp at %s\n", bmp_path);
-    }
-
-    SDL_free(bmp_path);
-
-    p->texture = SDL_CreateTextureFromSurface(renderer, surface);
+    p->texture = load_bmp_texture("assets/ship.bmp", renderer);
     if (!p->texture) {
-        SDL_Log("Failed to create texture from surface: %s\n", SDL_GetError());
+        SDL_Log("Failed to create ship texture\n");
     }
-
-    SDL_DestroySurface(surface);
 }
 
 void handle_input(SDL_Event *e, struct Player *p) {

@@ -8,6 +8,7 @@
 #include "bullet.h"
 #include "config.h"
 #include "enemy.h"
+#include "levels/level.h"
 #include "player.h"
 #include "quadtree.h"
 #include "star.h"
@@ -23,6 +24,7 @@ struct AppState {
     int paused; // 4 bytes
     struct Bullet *bullets[NUM_BULLETS];
     struct Player player;
+    struct Level *active_level;
 };
 
 Uint32 fire_weapon(void *as, SDL_TimerID id, Uint32 interval) {
@@ -62,7 +64,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
 
     initialize_player(player, renderer);
     initialize_stars(stars, NUM_STARS);
-
+    as->active_level = build_level_1(renderer);
     *appstate = as;
 
     SDL_AddTimer(100, &fire_weapon, as);
@@ -89,7 +91,8 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
     }
 
     if (event->type == SDL_EVENT_MOUSE_BUTTON_UP) {
-        ((struct AppState *)appstate)->paused = !((struct AppState *)appstate)->paused;
+        ((struct AppState *)appstate)->paused =
+            !((struct AppState *)appstate)->paused;
     }
 
     handle_input(event, player);
@@ -100,14 +103,14 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 SDL_AppResult SDL_AppIterate(void *appstate) {
     Uint64 start = SDL_GetTicksNS();
 
+    struct AppState *as = (struct AppState *)(appstate);
+    struct Player *player = &(as->player);
     struct QTNode *q_tree = calloc(1, sizeof(struct QTNode));
 
     qt_initialize(q_tree, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-    struct AppState *as = (struct AppState *)(appstate);
-    struct Player *player = &(as->player);
-
     update_player_movement(player);
+
+    as->active_level->q_tree = q_tree;
 
     if (as->paused) {
         SDL_Delay(500);
@@ -117,16 +120,20 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     SDL_SetRenderDrawColor(renderer, 10, 15, 20, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
+    render_level(as->active_level, renderer);
+
     for (size_t i = 0; i < player->bullets_fired; ++i) {
+        printf("Firing bullets!\n");
         struct Bullet *b = as->bullets[i];
         b->rect.y -= BULLET_SPEED;
         b->rect.x += i % 2 == 0 ? b->velocity : -b->velocity;
 
         struct Enemy *collided_enemy = qt_query(q_tree, &b->rect);
         if (collided_enemy != NULL) {
+            printf("COLLISION!!!\n");
             SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
             SDL_RenderRect(renderer, &collided_enemy->rect);
-            collided_enemy->health = 0;
+            collided_enemy->health -= 35;
         }
 
         if (b->rect.y < 0 || collided_enemy != NULL) {
@@ -148,7 +155,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     qt_print_tree(q_tree, renderer);
     wrap_coordinates(&player->x, &player->y, SHIP_SIZE, SHIP_SIZE);
 
-    SDL_SetRenderDrawColor(renderer, 150, 150, 150, SDL_ALPHA_OPAQUE);
+    // SDL_SetRenderDrawColor(renderer, 150, 150, 150, SDL_ALPHA_OPAQUE);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     SDL_RenderTexture(renderer, player->texture, NULL, &player->rect);
