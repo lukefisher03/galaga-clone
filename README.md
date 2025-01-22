@@ -2,12 +2,10 @@
 
 Written using SDL in C. Utilizes Quad Tree collision detection. Hoping to implement some other fun algorithms additionally.
 
-
 #### Screenshot of Quad Tree boundaries
 
 Here you can see how the quad tree divides up the space and then the red hit box around an enemy that's just been hit. Notice how collisions work despite the enemy spanning multiple quadrants.
 ![Quad Tree](assets/quadtree.png)
-
 
 ### TODO
 
@@ -20,6 +18,10 @@ Here you can see how the quad tree divides up the space and then the red hit box
 - [x] Split code into multiple files.
 - [x] Add enemies to shoot at (probably multiple enemies). _This is like kinda there, we'll update more later once collisions are working_
 - [ ] Implement health, possibly do a health bar or hearts?
+- [ ] Level building and customization.
+  - [x] Add basic level stuff.
+  - [ ] Add a way to switch between or progress between levels. Like a manager or something.
+  - [ ] Add functions for spawning in enemy clusters in a less verbose way.
 - [ ] Start menu?
 
 ### Nice to haves
