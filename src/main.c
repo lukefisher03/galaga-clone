@@ -67,7 +67,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     as->active_level = build_level_1(renderer);
     *appstate = as;
 
-    SDL_AddTimer(100, &fire_weapon, as);
+    SDL_AddTimer(300, &fire_weapon, as);
 
     SDL_SetRenderVSync(renderer, 1);
     return SDL_APP_CONTINUE;
@@ -121,6 +121,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     SDL_RenderClear(renderer);
 
     render_level(as->active_level, renderer);
+    update_level_1(as->active_level);
 
     for (size_t i = 0; i < player->bullets_fired; ++i) {
         printf("Firing bullets!\n");
@@ -134,6 +135,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
             SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
             SDL_RenderRect(renderer, &collided_enemy->rect);
             collided_enemy->health -= 35;
+            as->active_level->enemy_count -= 1;
         }
 
         if (b->rect.y < 0 || collided_enemy != NULL) {
@@ -160,6 +162,9 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     SDL_RenderTexture(renderer, player->texture, NULL, &player->rect);
     SDL_RenderDebugText(renderer, 20, 20, "GALAGA!");
+    if (as->active_level->enemy_count <= 0) {
+        SDL_RenderDebugText(renderer, 200, 20, "YOU WIN!");
+    }
     SDL_RenderPresent(renderer);
 
     qt_free(q_tree);

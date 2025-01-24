@@ -15,8 +15,9 @@
 
 #define NUM_ENEMIES 50
 #define MAX_ENEMY_CLUSTER_SIZE 50
-#define ENEMY_SPEED 4.0f
+#define ENEMY_SPEED 2.0f
 #define MAX_ENEMY_HEALTH 100
 
+#define DEFAULT_ENEMY_BMP "assets/enemy.bmp"
 
 #endif

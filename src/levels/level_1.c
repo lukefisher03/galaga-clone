@@ -21,27 +21,15 @@ struct Level *build_level_1(SDL_Renderer *renderer) {
         printf("Failed to allocate space enemy clusters");
         return NULL;
     }
-    printf("Enemey cluster 0: %i", level->enemy_clusters[0].size);
-    printf("Running build level\n");
-    for (size_t i = 0; i < level->num_clusters; ++i) {
-        printf("%lu\n", i);
-        struct EnemyCluster *cluster = &level->enemy_clusters[i];
-        cluster->enemies = calloc(5, sizeof(struct Enemy));
-        cluster->texture = load_bmp_texture("assets/enemy.bmp", renderer);
-        cluster->size = 5;
-    }
 
-    struct EnemyCluster *cluster1 = &level->enemy_clusters[0];
-    for (size_t j = 0; j < cluster1->size; ++j) {
-        initialize_default_enemy(&cluster1->enemies[j],
-                                 300 + ((SHIP_SIZE + 50) * j), 200);
-    }
-
-    struct EnemyCluster *cluster2 = &level->enemy_clusters[1];
-    for (size_t j = 0; j < cluster2->size; ++j) {
-        initialize_default_enemy(&cluster2->enemies[j],
-                                 700 + ((SHIP_SIZE + 50) * j), 400);
-    }
+    level->enemy_clusters[0] =
+        *create_enemy_cluster(5, 20, 100, 400, level, NULL, renderer);
+    level->enemy_clusters[1] =
+        *create_enemy_cluster(5, 300, 300, 600, level, NULL, renderer);
 
     return level;
+}
+
+void update_level_1(struct Level *level) {
+    // blank for now
 }
