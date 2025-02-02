@@ -38,5 +38,4 @@
 #define ENEMY_BULLET_BUFFER_SIZE 50
 #define DEFAULT_ENEMY_BMP "assets/enemy.bmp"
 
-
 #endif

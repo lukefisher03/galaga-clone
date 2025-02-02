@@ -5,9 +5,6 @@
 
 struct Level;
 
-struct QTNode;
-struct Bullet;
-
 struct Enemy {
     SDL_FRect rect;
     int health;

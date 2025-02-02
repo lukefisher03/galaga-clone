@@ -1,10 +1,11 @@
-#include "bullet.h"
-#include "player.h"
+#include <stdlib.h>
 
-struct Bullet *create_bullet(struct Player *p) {
+#include "bullet.h"
+
+struct Bullet *create_bullet(SDL_FRect *entity_box) {
     struct Bullet *b = malloc(sizeof(struct Bullet));
-    b->rect.x = p->rect.x + (SHIP_SIZE / 2);
-    b->rect.y = p->rect.y - (SHIP_SIZE * 0.05);
+    b->rect.x = entity_box->x + (SHIP_SIZE / 2);
+    b->rect.y = entity_box->y - (SHIP_SIZE * 0.05);
     b->velocity = SDL_randf() / 2;
     b->rect.h = 15;
     b->rect.w = 2;

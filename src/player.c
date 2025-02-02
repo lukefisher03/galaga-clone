@@ -2,8 +2,9 @@
 #include "config.h"
 #include "enemy.h"
 #include "utils.h"
+#include "app_state.h"
 
-void initialize_player(struct Player *p, SDL_Renderer *renderer) {
+void initialize_player(struct Player *p, struct AppState *as, SDL_Renderer *renderer) {
     p->rect.x = (SCREEN_WIDTH - SHIP_SIZE) / 2.0f;
     p->rect.y = (SCREEN_HEIGHT - SHIP_SIZE) * 0.85f;
     p->rect.w = SHIP_SIZE;
@@ -15,6 +16,9 @@ void initialize_player(struct Player *p, SDL_Renderer *renderer) {
     if (!p->texture) {
         SDL_Log("Failed to create ship texture\n");
     }
+
+    SDL_AddTimer(300, &fire_weapon, as);
+
 }
 
 void handle_input(SDL_Event *e, struct Player *p) {
@@ -124,4 +128,19 @@ unsigned int check_player_bullet_collision(struct Player *player,
         SDL_RenderRect(renderer, &(b->rect));
     }
     return collision_count;
+}
+
+Uint32 fire_weapon(void *as, SDL_TimerID id, Uint32 interval) {
+    struct AppState *state = (struct AppState *)(as);
+
+    if (state->paused) {
+        return interval;
+    }
+
+    struct Player *p = &state->player;
+    if (p->wasd & 16 && p->bullets_fired < PLAYER_NUM_BULLETS) {
+        struct Bullet *b = create_bullet(&p->rect);
+        state->bullets[++p->bullets_fired - 1] = b;
+    }
+    return interval;
 }

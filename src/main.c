@@ -6,42 +6,21 @@
 #include <stdlib.h>
 
 #include "bullet.h"
+#include "player.h"
 #include "config.h"
 #include "enemy.h"
 #include "levels/level.h"
-#include "player.h"
 #include "quadtree.h"
 #include "star.h"
 #include "utils.h"
+#include "app_state.h"
+
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 static SDL_Texture *texture = NULL;
 
 static struct Star stars[STAR_COUNT];
-
-struct AppState {
-    int paused;
-    struct Bullet *bullets[PLAYER_NUM_BULLETS];
-    struct Bullet *enemy_bullets[ENEMY_BULLET_BUFFER_SIZE];
-    struct Player player;
-    struct Level *active_level;
-};
-
-Uint32 fire_weapon(void *as, SDL_TimerID id, Uint32 interval) {
-    struct AppState *state = (struct AppState *)(as);
-
-    if (state->paused) {
-        return interval;
-    }
-
-    struct Player *p = &state->player;
-    if (p->wasd & 16 && p->bullets_fired < PLAYER_NUM_BULLETS) {
-        struct Bullet *b = create_bullet(p);
-        state->bullets[++p->bullets_fired - 1] = b;
-    }
-    return interval;
-}
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     struct AppState *as = SDL_calloc(1, sizeof(struct AppState));
@@ -63,12 +42,11 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
         return SDL_APP_FAILURE;
     }
 
-    initialize_player(player, renderer);
+    initialize_player(player, as, renderer);
     initialize_stars(stars, STAR_COUNT);
     as->active_level = build_level_1(renderer);
     *appstate = as;
 
-    SDL_AddTimer(300, &fire_weapon, as);
 
     SDL_SetRenderVSync(renderer, 1);
     return SDL_APP_CONTINUE;
@@ -121,7 +99,8 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     render_level(as->active_level, renderer);
 
-    unsigned int num_collisions = check_player_bullet_collision(&as->player, as->bullets, q_tree, renderer);
+    unsigned int num_collisions = check_player_bullet_collision(
+        &as->player, as->bullets, q_tree, renderer);
     as->active_level->enemy_count -= num_collisions;
 
     render_stars(stars, renderer, player);
