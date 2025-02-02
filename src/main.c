@@ -21,8 +21,9 @@ static SDL_Texture *texture = NULL;
 static struct Star stars[NUM_STARS];
 
 struct AppState {
-    int paused; // 4 bytes
+    int paused;
     struct Bullet *bullets[NUM_BULLETS];
+    struct Bullet *enemy_bullets[ENEMY_BULLET_BUFFER_SIZE];
     struct Player player;
     struct Level *active_level;
 };
@@ -101,8 +102,6 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 }
 
 SDL_AppResult SDL_AppIterate(void *appstate) {
-    Uint64 start = SDL_GetTicksNS();
-
     struct AppState *as = (struct AppState *)(appstate);
     struct Player *player = &(as->player);
     struct QTNode *q_tree = calloc(1, sizeof(struct QTNode));
@@ -123,39 +122,11 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     render_level(as->active_level, renderer);
     update_level_1(as->active_level);
 
-    for (size_t i = 0; i < player->bullets_fired; ++i) {
-        printf("Firing bullets!\n");
-        struct Bullet *b = as->bullets[i];
-        b->rect.y -= BULLET_SPEED;
-        b->rect.x += i % 2 == 0 ? b->velocity : -b->velocity;
-
-        struct Enemy *collided_enemy = qt_query(q_tree, &b->rect);
-        if (collided_enemy != NULL) {
-            printf("COLLISION!!!\n");
-            SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-            SDL_RenderRect(renderer, &collided_enemy->rect);
-            collided_enemy->health -= 35;
-            as->active_level->enemy_count -= 1;
-        }
-
-        if (b->rect.y < 0 || collided_enemy != NULL) {
-            free(as->bullets[i]);
-            /* This keeps a compact array. The bullet is freed and a
-             * hole is created in the array, so automatically move the
-             * last bullet into that space and decrement the bullet
-             * count. The order of the array elements doesn't matter.
-             */
-
-            as->bullets[i] = as->bullets[--player->bullets_fired];
-        }
-
-        SDL_SetRenderDrawColor(renderer, 3, 215, 255, SDL_ALPHA_OPAQUE);
-        SDL_RenderRect(renderer, &(b->rect));
-    }
+    unsigned int num_collisions = check_player_bullet_collision(&as->player, as->bullets, q_tree, renderer);
+    as->active_level->enemy_count -= num_collisions;
 
     render_stars(stars, renderer, player);
     qt_print_tree(q_tree, renderer);
-    wrap_coordinates(&player->x, &player->y, SHIP_SIZE, SHIP_SIZE);
 
     // SDL_SetRenderDrawColor(renderer, 150, 150, 150, SDL_ALPHA_OPAQUE);
 

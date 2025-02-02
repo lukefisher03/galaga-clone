@@ -10,7 +10,7 @@ OBJ = $(SRC:.c=.o)
 game: $(OBJ)
 	echo "BUILT MAIN DIRECTORY"
 	$(MAKE) -C levels
-	gcc -g -rpath /usr/local/lib -L/usr/local/lib -lSDL3.0  $(BIN)/*.o -o main 
+	gcc -g -Wall -rpath /usr/local/lib -L/usr/local/lib -lSDL3.0  $(BIN)/*.o -o main 
 
 dir:
 	mkdir -p $(BIN)

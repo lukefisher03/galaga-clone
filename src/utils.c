@@ -1,17 +1,17 @@
 #include "utils.h"
 
-void wrap_coordinates(float *x, float *y, float w, float h) {
-    if (*x + w > (float)SCREEN_WIDTH) {
-        *x = 0;
+void wrap_coordinates(SDL_FRect *rect) {
+    if (rect->x + rect->w > (float)SCREEN_WIDTH) {
+        rect->x = 0;
     }
-    if (*x < 0) {
-        *x = SCREEN_WIDTH - w;
+    if (rect->x < 0) {
+        rect->x = SCREEN_WIDTH - rect->w;
     }
-    if (*y > (float)SCREEN_HEIGHT) {
-        *y = 0;
+    if (rect->y > (float)SCREEN_HEIGHT) {
+        rect->y = 0;
     }
-    if (y < 0) {
-        *y = (float)(SCREEN_HEIGHT - (h * 0.5f));
+    if (rect->y < 0) {
+        rect->y = (float)(SCREEN_HEIGHT - (rect->h * 0.5f));
     }
 }
 

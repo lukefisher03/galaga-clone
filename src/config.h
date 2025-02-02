@@ -17,6 +17,7 @@
 #define MAX_ENEMY_CLUSTER_SIZE 50
 #define ENEMY_SPEED 2.0f
 #define MAX_ENEMY_HEALTH 100
+#define ENEMY_BULLET_BUFFER_SIZE 50
 
 #define DEFAULT_ENEMY_BMP "assets/enemy.bmp"
 
