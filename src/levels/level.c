@@ -1,9 +1,11 @@
 #include "level.h"
+#include "../app_state.h"
 #include "../config.h"
 
 int determine_cluster_direction(struct EnemyCluster *cluster);
 
-void render_level(struct Level *level, SDL_Renderer *renderer) {
+void render_level(struct AppState *as, SDL_Renderer *renderer) {
+    struct Level *level = as->active_level;
     if (!level || !renderer) {
         printf("Failed to render level");
         return;
@@ -24,6 +26,18 @@ void render_level(struct Level *level, SDL_Renderer *renderer) {
                                       &e->rect);
                 }
             }
+        }
+    }
+
+    for (size_t i = 0; i < level->enemy_bullets_fired; ++i) {
+        struct Bullet *b = as->enemy_bullets[i];
+        b->rect.y += BULLET_SPEED;
+        SDL_SetRenderDrawColor(renderer, 215, 100, 100, SDL_ALPHA_OPAQUE);
+        SDL_RenderRect(renderer, &(b->rect));
+
+        if (SDL_HasRectIntersectionFloat(&b->rect, &as->player.rect)) {
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+            SDL_RenderRect(renderer, &as->player.rect);
         }
     }
 }

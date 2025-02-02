@@ -3,8 +3,10 @@
 
 #include "../utils.h"
 #include "level.h"
+#include "../app_state.h"
+#include "../enemy.h"
 
-struct Level *build_level_1(SDL_Renderer *renderer) {
+struct Level *build_level_1(struct AppState *as, SDL_Renderer *renderer) {
     struct Level *level = malloc(sizeof(struct Level));
 
     if (!level) {
@@ -26,6 +28,7 @@ struct Level *build_level_1(SDL_Renderer *renderer) {
         *create_enemy_cluster(5, 20, 100, 400, level, NULL, renderer);
     level->enemy_clusters[1] =
         *create_enemy_cluster(5, 300, 300, 600, level, NULL, renderer);
+    SDL_AddTimer(300, &fire_enemy_weapon, as);
 
     return level;
 }

@@ -17,8 +17,7 @@ void initialize_player(struct Player *p, struct AppState *as, SDL_Renderer *rend
         SDL_Log("Failed to create ship texture\n");
     }
 
-    SDL_AddTimer(300, &fire_weapon, as);
-
+    SDL_AddTimer(300, &fire_player_weapon, as);
 }
 
 void handle_input(SDL_Event *e, struct Player *p) {
@@ -93,7 +92,7 @@ void update_player_movement(struct Player *p) {
 #endif
 }
 
-unsigned int check_player_bullet_collision(struct Player *player,
+unsigned int update_bullets(struct Player *player,
                                            struct Bullet **bullets,
                                            struct QTNode *q_tree,
                                            SDL_Renderer *renderer) {
@@ -114,14 +113,7 @@ unsigned int check_player_bullet_collision(struct Player *player,
         }
 
         if (b->rect.y < 0 || collided_enemy != NULL) {
-            free(bullets[i]);
-            /* This keeps a compact array. The bullet is freed and a
-             * hole is created in the array, so automatically move the
-             * last bullet into that space and decrement the bullet
-             * count. The order of the array elements doesn't matter.
-             */
-
-            bullets[i] = bullets[--player->bullets_fired];
+            destroy_bullet(i, bullets, --player->bullets_fired);
         }
 
         SDL_SetRenderDrawColor(renderer, 3, 215, 255, SDL_ALPHA_OPAQUE);
@@ -130,7 +122,7 @@ unsigned int check_player_bullet_collision(struct Player *player,
     return collision_count;
 }
 
-Uint32 fire_weapon(void *as, SDL_TimerID id, Uint32 interval) {
+Uint32 fire_player_weapon(void *as, SDL_TimerID id, Uint32 interval) {
     struct AppState *state = (struct AppState *)(as);
 
     if (state->paused) {

@@ -44,7 +44,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
 
     initialize_player(player, as, renderer);
     initialize_stars(stars, STAR_COUNT);
-    as->active_level = build_level_1(renderer);
+    as->active_level = build_level_1(as, renderer);
     *appstate = as;
 
 
@@ -97,9 +97,9 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     SDL_SetRenderDrawColor(renderer, 10, 15, 20, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
-    render_level(as->active_level, renderer);
+    render_level(as, renderer);
 
-    unsigned int num_collisions = check_player_bullet_collision(
+    unsigned int num_collisions = update_bullets(
         &as->player, as->bullets, q_tree, renderer);
     as->active_level->enemy_count -= num_collisions;
 

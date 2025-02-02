@@ -1,4 +1,5 @@
 #include "enemy.h"
+#include "app_state.h"
 #include "config.h"
 #include "levels/level.h"
 #include "quadtree.h"
@@ -48,6 +49,7 @@ struct EnemyCluster *create_enemy_cluster(int size, float x, float y,
     }
 
     level->cluster_count += 1;
+
     return enemy_cluster;
 }
 
@@ -60,4 +62,28 @@ void initialize_default_enemy(struct Enemy *e, int x, int y) {
     r.y = y;
 
     e->rect = r;
+}
+
+Uint32 fire_enemy_weapon(void *as, SDL_TimerID id, Uint32 interval) {
+    struct AppState *state = (struct AppState *)(as);
+
+    if (state->paused) {
+        return interval;
+    }
+
+    struct Level *l = state->active_level;
+    printf("Random number %i\n", SDL_rand(l->cluster_count));
+    if (l->enemy_bullets_fired < ENEMY_BULLET_BUFFER_SIZE) {
+        struct EnemyCluster *chosen_cluster =
+            &l->enemy_clusters[SDL_rand(l->cluster_count)];
+        struct Enemy *chosen_enemy =
+            &chosen_cluster->enemies[SDL_rand(chosen_cluster->size)];
+
+        if (chosen_enemy->health > 0) { // Dirty fix to stop dead enemies from firing weapons
+            struct Bullet *b = create_bullet(&chosen_enemy->rect);
+            state->enemy_bullets[++l->enemy_bullets_fired - 1] = b;
+        }
+    }
+
+    return interval;
 }
