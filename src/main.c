@@ -120,15 +120,11 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     SDL_RenderClear(renderer);
 
     render_level(as->active_level, renderer);
-    update_level_1(as->active_level);
 
     unsigned int num_collisions = check_player_bullet_collision(&as->player, as->bullets, q_tree, renderer);
     as->active_level->enemy_count -= num_collisions;
 
     render_stars(stars, renderer, player);
-    qt_print_tree(q_tree, renderer);
-
-    // SDL_SetRenderDrawColor(renderer, 150, 150, 150, SDL_ALPHA_OPAQUE);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     SDL_RenderTexture(renderer, player->texture, NULL, &player->rect);

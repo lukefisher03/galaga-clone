@@ -1,7 +1,9 @@
 #include "level.h"
 #include "../config.h"
 
-void render_level(struct Level *level, SDL_Renderer *renderer) {
+int determine_cluster_direction(struct EnemyCluster *cluster);
+
+void update_level(struct Level *level, SDL_Renderer *renderer) {
     if (!level || !renderer) {
         printf("Failed to render level");
         return;
@@ -9,15 +11,7 @@ void render_level(struct Level *level, SDL_Renderer *renderer) {
 
     for (size_t i = 0; i < level->num_clusters; ++i) {
         struct EnemyCluster *cluster = &level->enemy_clusters[i];
-        if (cluster->shift_distance) {
-            if (cluster->enemies[0].rect.x >
-                cluster->box.x + cluster->shift_distance) {
-                cluster->direction *= -1;
-            } else if (cluster->enemies[0].rect.x < cluster->box.x) {
-                cluster->direction *= -1;
-            }
-        }
-
+        cluster->direction *= determine_cluster_direction(cluster);
         if (cluster->size != 0) {
             for (size_t j = 0; j < cluster->size; ++j) {
                 struct Enemy *e = &cluster->enemies[j];
@@ -32,4 +26,17 @@ void render_level(struct Level *level, SDL_Renderer *renderer) {
             }
         }
     }
+}
+
+int determine_cluster_direction(struct EnemyCluster *cluster) {
+    if (cluster->shift_distance) {
+        if (cluster->enemies[0].rect.x >
+            cluster->box.x + cluster->shift_distance) {
+            return -1;
+        } else if (cluster->enemies[0].rect.x < cluster->box.x) {
+            return -1;
+        }
+    }
+
+    return 1;
 }
