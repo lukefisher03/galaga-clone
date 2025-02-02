@@ -9,9 +9,9 @@ struct EnemyCluster *create_enemy_cluster(int size, float x, float y,
                                           struct Level *level,
                                           char *texture_path,
                                           SDL_Renderer *renderer) {
-    if (size > MAX_ENEMY_CLUSTER_SIZE) {
+    if (size > ENEMY_MAX_CLUSTER_SIZE) {
         printf("Attempted to allocate enemy cluster larger than: %i.",
-               MAX_ENEMY_CLUSTER_SIZE);
+               ENEMY_MAX_CLUSTER_SIZE);
         return NULL;
     }
 
@@ -44,7 +44,7 @@ struct EnemyCluster *create_enemy_cluster(int size, float x, float y,
         initialize_default_enemy(&enemy_cluster->enemies[i],
                                  x + ((SHIP_SIZE + 10) * i), y);
         level->enemy_count += 1;
-        e.health = MAX_ENEMY_HEALTH;
+        e.health = ENEMY_MAX_HEALTH;
     }
 
     level->cluster_count += 1;

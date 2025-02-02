@@ -18,11 +18,11 @@ static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 static SDL_Texture *texture = NULL;
 
-static struct Star stars[NUM_STARS];
+static struct Star stars[STAR_COUNT];
 
 struct AppState {
     int paused;
-    struct Bullet *bullets[NUM_BULLETS];
+    struct Bullet *bullets[PLAYER_NUM_BULLETS];
     struct Bullet *enemy_bullets[ENEMY_BULLET_BUFFER_SIZE];
     struct Player player;
     struct Level *active_level;
@@ -36,7 +36,7 @@ Uint32 fire_weapon(void *as, SDL_TimerID id, Uint32 interval) {
     }
 
     struct Player *p = &state->player;
-    if (p->wasd & 16 && p->bullets_fired < NUM_BULLETS) {
+    if (p->wasd & 16 && p->bullets_fired < PLAYER_NUM_BULLETS) {
         struct Bullet *b = create_bullet(p);
         state->bullets[++p->bullets_fired - 1] = b;
     }
@@ -64,7 +64,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     }
 
     initialize_player(player, renderer);
-    initialize_stars(stars, NUM_STARS);
+    initialize_stars(stars, STAR_COUNT);
     as->active_level = build_level_1(renderer);
     *appstate = as;
 

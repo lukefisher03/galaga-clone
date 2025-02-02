@@ -70,14 +70,23 @@ void update_player_movement(struct Player *p) {
     if (p->wasd & 4 && (p->rect.y + SHIP_SIZE) < SCREEN_HEIGHT) {
         p->rect.y += PLAYER_SPEED;
     }
+
+#ifdef PLAYER_WRAP_AROUND
     if (p->wasd & 2) {
         p->rect.x -= PLAYER_SPEED;
     }
     if (p->wasd & 8) {
         p->rect.x += PLAYER_SPEED;
     }
-
     wrap_coordinates(&p->rect);
+#else
+    if (p->wasd & 2 && p->rect.x > 0) {
+        p->rect.x -= PLAYER_SPEED;
+    }
+    if (p->wasd & 8 && p->rect.x + p->rect.w < SCREEN_WIDTH) {
+        p->rect.x += PLAYER_SPEED;
+    }
+#endif
 }
 
 unsigned int check_player_bullet_collision(struct Player *player,
