@@ -3,7 +3,7 @@
 
 int determine_cluster_direction(struct EnemyCluster *cluster);
 
-void update_level(struct Level *level, SDL_Renderer *renderer) {
+void render_level(struct Level *level, SDL_Renderer *renderer) {
     if (!level || !renderer) {
         printf("Failed to render level");
         return;
