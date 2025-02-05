@@ -10,6 +10,7 @@ struct AppState;
 struct Player {
     int bullets_fired;
     char wasd;
+    char lives;
     SDL_Texture *texture;
     SDL_FRect rect;
 };

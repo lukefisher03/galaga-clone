@@ -38,6 +38,9 @@ void render_level(struct AppState *as, SDL_Renderer *renderer) {
         if (SDL_HasRectIntersectionFloat(&b->rect, &as->player.rect)) {
             SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
             SDL_RenderRect(renderer, &as->player.rect);
+            as->player.lives--;
+            free(as->enemy_bullets[i]);
+            as->enemy_bullets[i] = as->enemy_bullets[--level->enemy_bullets_fired];
         }
     }
 }

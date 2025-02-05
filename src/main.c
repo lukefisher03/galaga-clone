@@ -5,16 +5,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "app_state.h"
 #include "bullet.h"
-#include "player.h"
 #include "config.h"
 #include "enemy.h"
 #include "levels/level.h"
+#include "player.h"
 #include "quadtree.h"
 #include "star.h"
 #include "utils.h"
-#include "app_state.h"
-
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
@@ -46,7 +45,6 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     initialize_stars(stars, STAR_COUNT);
     as->active_level = build_level_1(as, renderer);
     *appstate = as;
-
 
     SDL_SetRenderVSync(renderer, 1);
     return SDL_APP_CONTINUE;
@@ -99,18 +97,36 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     render_level(as, renderer);
 
-    unsigned int num_collisions = update_bullets(
-        &as->player, as->bullets, q_tree, renderer);
-    as->active_level->enemy_count -= num_collisions;
+    unsigned int num_collisions =
+        update_bullets(&as->player, as->bullets, q_tree, renderer);
+    as->active_level->live_enemy_count -= num_collisions;
 
     render_stars(stars, renderer, player);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     SDL_RenderTexture(renderer, player->texture, NULL, &player->rect);
     SDL_RenderDebugText(renderer, 20, 20, "GALAGA!");
-    if (as->active_level->enemy_count <= 0) {
+    if (as->active_level->live_enemy_count <= 0) {
         SDL_RenderDebugText(renderer, 200, 20, "YOU WIN!");
     }
+
+    if (as->player.lives > 0) {
+        for (size_t i = 0; i < as->player.lives; i++) {
+            SDL_FRect r = {.h = SHIP_SIZE,
+                           .w = SHIP_SIZE,
+                           .x = SCREEN_WIDTH -
+                                ((PLAYER_DEFAULT_LIVES * SHIP_SIZE) + 20) +
+                                (SHIP_SIZE * i),
+                           .y = 20};
+
+            SDL_RenderTexture(renderer, player->texture, NULL, &r);
+        }
+    } else {
+        SDL_RenderDebugText(renderer, (SCREEN_WIDTH / 2) - 100, 300,
+                            "YOU DIED!");
+        as->paused = 1;
+    }
+
     SDL_RenderPresent(renderer);
 
     qt_free(q_tree);

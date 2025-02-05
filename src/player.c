@@ -11,6 +11,7 @@ void initialize_player(struct Player *p, struct AppState *as, SDL_Renderer *rend
     p->rect.h = SHIP_SIZE;
 
     p->bullets_fired = 0;
+    p->lives = PLAYER_DEFAULT_LIVES;
 
     p->texture = load_bmp_texture("assets/ship.bmp", renderer);
     if (!p->texture) {
@@ -96,7 +97,7 @@ unsigned int update_bullets(struct Player *player,
                                            struct Bullet **bullets,
                                            struct QTNode *q_tree,
                                            SDL_Renderer *renderer) {
-    unsigned int collision_count = 0;
+    unsigned int death_count = 0;
     for (size_t i = 0; i < player->bullets_fired; ++i) {
         struct Bullet *b = bullets[i];
         b->rect.y -= BULLET_SPEED;
@@ -108,7 +109,7 @@ unsigned int update_bullets(struct Player *player,
             SDL_RenderRect(renderer, &collided_enemy->rect);
             collided_enemy->health -= 35;
             if (collided_enemy->health <= 0) {
-                collision_count += 1;
+                death_count += 1;
             }
         }
 
@@ -119,7 +120,7 @@ unsigned int update_bullets(struct Player *player,
         SDL_SetRenderDrawColor(renderer, 3, 215, 255, SDL_ALPHA_OPAQUE);
         SDL_RenderRect(renderer, &(b->rect));
     }
-    return collision_count;
+    return death_count;
 }
 
 Uint32 fire_player_weapon(void *as, SDL_TimerID id, Uint32 interval) {

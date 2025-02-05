@@ -13,10 +13,10 @@ struct Level {
     // Resizable array of enemy clusters
     struct EnemyCluster *enemy_clusters;
     // Total number of clusters for the entire level
+    // Number of enemies left in the level
+    unsigned int live_enemy_count;
     unsigned int num_clusters;
     unsigned int cluster_count;
-    // Number of enemies left in the level
-    unsigned int enemy_count;
     unsigned int enemy_bullets_fired;
 
     struct QTNode *q_tree;

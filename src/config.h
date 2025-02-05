@@ -26,6 +26,7 @@
  */
 #define PLAYER_SPEED 6.0f
 #define PLAYER_NUM_BULLETS 50
+#define PLAYER_DEFAULT_LIVES 3
 // #define PLAYER_WRAP_AROUND
 
 /**

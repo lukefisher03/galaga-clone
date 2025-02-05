@@ -44,7 +44,7 @@ struct EnemyCluster *create_enemy_cluster(int size, float x, float y,
         struct Enemy e = enemy_cluster->enemies[i];
         initialize_default_enemy(&enemy_cluster->enemies[i],
                                  x + ((SHIP_SIZE + 10) * i), y);
-        level->enemy_count += 1;
+        level->live_enemy_count++;
         e.health = ENEMY_MAX_HEALTH;
     }
 
@@ -72,7 +72,7 @@ Uint32 fire_enemy_weapon(void *as, SDL_TimerID id, Uint32 interval) {
     }
 
     struct Level *l = state->active_level;
-    printf("Random number %i\n", SDL_rand(l->cluster_count));
+    // printf("Random number %i\n", SDL_rand(l->cluster_count));
     if (l->enemy_bullets_fired < ENEMY_BULLET_BUFFER_SIZE) {
         struct EnemyCluster *chosen_cluster =
             &l->enemy_clusters[SDL_rand(l->cluster_count)];
