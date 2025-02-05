@@ -5,7 +5,7 @@ Written using SDL in C. Utilizes Quad Tree collision detection. Hoping to implem
 #### Screenshot of Quad Tree boundaries
 
 Here you can see how the quad tree divides up the space and then the red hit box around an enemy that's just been hit. Notice how collisions work despite the enemy spanning multiple quadrants.
-![Quad Tree](assets/quadtree.png)
+![Quad Tree](src/assets/quadtree.png)
 
 ### TODO
 
