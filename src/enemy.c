@@ -1,68 +1,89 @@
 #include "enemy.h"
+#include "app_state.h"
+#include "config.h"
+#include "levels/level.h"
 #include "quadtree.h"
+#include "utils.h"
 
-void initialize_enemies(struct EnemyCluster *enemy_cluster,
-                        SDL_Renderer *renderer) {
-    char *bmp_path = NULL;
-    SDL_asprintf(&bmp_path, "%sassets/enemy.bmp", SDL_GetBasePath());
-    printf("Initializing enemy from bmp at path: %s\n", bmp_path);
+struct EnemyCluster *create_enemy_cluster(int size, float x, float y,
+                                          int shift_distance,
+                                          struct Level *level,
+                                          char *texture_path,
+                                          SDL_Renderer *renderer) {
+    if (size > ENEMY_MAX_CLUSTER_SIZE) {
+        printf("Attempted to allocate enemy cluster larger than: %i.",
+               ENEMY_MAX_CLUSTER_SIZE);
+        return NULL;
+    }
+
+    if (!texture_path) {
+        texture_path = DEFAULT_ENEMY_BMP;
+    }
+
+    struct EnemyCluster *enemy_cluster = malloc(sizeof(struct EnemyCluster));
+    if (!enemy_cluster) {
+        printf("Failed to allocate enemy cluster");
+        return NULL;
+    }
+    enemy_cluster->size = size;
+    enemy_cluster->enemies = calloc(size, sizeof(struct Enemy));
+    enemy_cluster->texture = load_bmp_texture(texture_path, renderer);
+    enemy_cluster->box.x = x;
+    enemy_cluster->box.y = y;
+    enemy_cluster->box.w = (SHIP_SIZE + 10) * enemy_cluster->size;
+    enemy_cluster->box.h = SHIP_SIZE;
+    enemy_cluster->shift_distance = shift_distance;
     enemy_cluster->direction = 1;
-    for (size_t i = 0; i < NUM_ENEMIES; i++) {
-        struct Enemy *e = &enemy_cluster->enemies[i];
-        SDL_Surface *surface = SDL_LoadBMP(bmp_path);
 
-        if (!surface) {
-            SDL_Log("Failed to load bmp for enemy ship, error - \n%s",
-                    SDL_GetError());
-        }
-
-        e->texture = SDL_CreateTextureFromSurface(renderer, surface);
-
-        if (!e->texture) {
-            SDL_Log("Failed to create texture for enemy ship, error - \n%s",
-                    SDL_GetError());
-        }
-
-        // e->x = (float)(SHIP_SIZE * i);
-        e->x = SDL_randf() * (SCREEN_WIDTH - SHIP_SIZE);
-        // e->y = 100.0;
-        e->y = SDL_randf() * (SCREEN_HEIGHT - 200);
-        e->health = 50;
-
-        SDL_DestroySurface(surface);
+    if (!enemy_cluster->enemies) {
+        printf("Failed to allocate enemies array in new Enemy Cluster");
+        return NULL;
     }
 
-    SDL_free(bmp_path);
-};
-
-void render_enemies(struct EnemyCluster *enemy_cluster, SDL_Renderer *renderer,
-                    struct QTNode *q_tree) {
-    if (enemy_cluster->enemies[0].x <= 0) {
-        enemy_cluster->direction = 1;
+    for (size_t i = 0; i < size; ++i) {
+        struct Enemy e = enemy_cluster->enemies[i];
+        initialize_default_enemy(&enemy_cluster->enemies[i],
+                                 x + ((SHIP_SIZE + 10) * i), y);
+        level->live_enemy_count++;
+        e.health = ENEMY_MAX_HEALTH;
     }
 
-    if (enemy_cluster->enemies[NUM_ENEMIES - 1].x + SHIP_SIZE >= SCREEN_WIDTH) {
-        enemy_cluster->direction = -1;
-    }
+    level->cluster_count += 1;
 
-    for (size_t i = 0; i < NUM_ENEMIES; i++) {
-        struct Enemy *e = &enemy_cluster->enemies[i];
-        // don't render dead enemies
-        if (e->health == 0) {
-            continue;
-        }
-        e->x += ENEMY_SPEED * enemy_cluster->direction;
-        e->rect.x = e->x;
-        e->rect.y = e->y;
-        e->rect.w = SHIP_SIZE;
-        e->rect.h = SHIP_SIZE;
-
-        qt_add_node(q_tree, e);
-        SDL_RenderTexture(renderer, e->texture, NULL, &e->rect);
-    }
+    return enemy_cluster;
 }
 
-void check_bullet_collision(struct Bullet *b,
-                            struct EnemyCluster *enemy_cluster) {
-    // TODO: Implement this
+void initialize_default_enemy(struct Enemy *e, int x, int y) {
+    e->health = 10;
+    SDL_FRect r;
+    r.w = SHIP_SIZE;
+    r.h = SHIP_SIZE;
+    r.x = x;
+    r.y = y;
+
+    e->rect = r;
+}
+
+Uint32 fire_enemy_weapon(void *as, SDL_TimerID id, Uint32 interval) {
+    struct AppState *state = (struct AppState *)(as);
+
+    if (state->paused) {
+        return interval;
+    }
+
+    struct Level *l = state->active_level;
+    // printf("Random number %i\n", SDL_rand(l->cluster_count));
+    if (l->enemy_bullets_fired < ENEMY_BULLET_BUFFER_SIZE) {
+        struct EnemyCluster *chosen_cluster =
+            &l->enemy_clusters[SDL_rand(l->cluster_count)];
+        struct Enemy *chosen_enemy =
+            &chosen_cluster->enemies[SDL_rand(chosen_cluster->size)];
+
+        if (chosen_enemy->health > 0) { // Dirty fix to stop dead enemies from firing weapons
+            struct Bullet *b = create_bullet(&chosen_enemy->rect);
+            state->enemy_bullets[++l->enemy_bullets_fired - 1] = b;
+        }
+    }
+
+    return interval;
 }

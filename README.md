@@ -1,13 +1,11 @@
-# Galaga Inspired Game in C (SDL)
+# Space Invaders Inspired Game in C (SDL)
 
 Written using SDL in C. Utilizes Quad Tree collision detection. Hoping to implement some other fun algorithms additionally.
-
 
 #### Screenshot of Quad Tree boundaries
 
 Here you can see how the quad tree divides up the space and then the red hit box around an enemy that's just been hit. Notice how collisions work despite the enemy spanning multiple quadrants.
-![Quad Tree](assets/quadtree.png)
-
+![Quad Tree](src/assets/quadtree.png)
 
 ### TODO
 
@@ -20,16 +18,25 @@ Here you can see how the quad tree divides up the space and then the red hit box
 - [x] Split code into multiple files.
 - [x] Add enemies to shoot at (probably multiple enemies). _This is like kinda there, we'll update more later once collisions are working_
 - [ ] Implement health, possibly do a health bar or hearts?
+- [ ] Level building and customization.
+  - [x] Add basic level stuff.
+  - [ ] Add a way to switch between or progress between levels. Like a manager or something.
+  - [x] Add functions for spawning in enemy clusters in a less verbose way.
+    - Good enough for now
 - [ ] Start menu?
+- [ ] Add animations for shooting and dying.
+- [ ] Add a variety of enemies.
+- [ ] Enemies might every once and a while do something other than move horizontally and shoot?
 
 ### Nice to haves
 
-- [ ] Better stars in the background that maybe move around a little when you move.
+- [x] Better stars in the background that maybe move around a little when you move.
 - [ ] Better or maybe even custom sprites.
 - [ ] Make sure that my cpu utilization is at least okay.
 - [ ] Add screenshots of gameplay (once there is gameplay).
-- [ ] Make Makefile actually look decent.
-- [ ] Convert quad tree to be stack allocated or at least do research into whether or not that's a good idea.
+- [x] Make Makefile actually look decent. (50% there, still some possible work in progress needed, but I'm marking this done for now)
+- [x] Convert quad tree to be stack allocated or at least do research into whether or not that's a good idea.
+  - Quad tree should be heap allocated. Sure, the stack would be faster, but due to the theoretical size of the quad tree heap allocation seems like a better choice.
 - [ ] Ensure good and helpful comments throughout the code.
 - [x] Standardize code style.
 - [x] Pause game when unfocused.

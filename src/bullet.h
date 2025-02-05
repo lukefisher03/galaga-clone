@@ -1,17 +1,16 @@
 #ifndef BULLET_H
 #define BULLET_H
 
-#include "config.h"
 #include <SDL3/SDL.h>
-#include <stdlib.h>
 
-struct Player;
+#include "config.h"
 
 struct Bullet {
     SDL_FRect rect;
     float velocity;
 };
 
-struct Bullet *create_bullet(struct Player *p);
+struct Bullet *create_bullet(SDL_FRect *entity_box);
+void destroy_bullet(size_t bullet_index, struct Bullet **bullet_buffer, int final_bullet_index);
 
 #endif

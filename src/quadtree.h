@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 #define QT_NODE_CAPACITY 4
-#define MAX_DEPTH NUM_ENEMIES
+#define MAX_DEPTH ENEMIES_COUNT
 #define MAX_NODE_VALUES 10
 
 struct Enemy;

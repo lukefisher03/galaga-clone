@@ -232,6 +232,8 @@ void qt_print_tree(struct QTNode *parent, SDL_Renderer *renderer) {
         return;
     }
 
+    qt_print_boundaries(parent);
+
     if (parent->values_count) {
         if (renderer != NULL) {
             SDL_SetRenderDrawColor(renderer, 60, 60, 60, SDL_ALPHA_OPAQUE);
@@ -246,7 +248,7 @@ void qt_print_tree(struct QTNode *parent, SDL_Renderer *renderer) {
 }
 
 void qt_print_boundaries(struct QTNode *node) {
-    printf("(x=%f, y=%f, w=%f, h=%f, is_leaf=%i, values_count=%i)",
+    printf("(x=%f, y=%f, w=%f, h=%f, is_leaf=%i, values_count=%i)\n",
            node->boundary.x, node->boundary.y, node->boundary.w,
            node->boundary.h, node->is_leaf, node->values_count);
 }
