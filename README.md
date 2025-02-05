@@ -1,4 +1,4 @@
-# Galaga Inspired Game in C (SDL)
+# Space Invaders Inspired Game in C (SDL)
 
 Written using SDL in C. Utilizes Quad Tree collision detection. Hoping to implement some other fun algorithms additionally.
 
